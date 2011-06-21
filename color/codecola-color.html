@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>color control</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <style>
+        #actor{
+            position:fixed;
+            top:10px;
+            right:10px;
+            width:400px;
+            height:400px;
+            line-height:400px;
+            font-size:40px;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+<div id="actor">I'm an actor!</div>
+<h3>#f00</h3>
+<div id="wrap"></div>
+<h3>rgb(100,204,204)</h3>
+<div id="wrap2" style="margin-bottom:50px;"></div>
+<h3>rgba(0,255,0,0.5)</h3>
+<div id="wrap3" style="margin-bottom:50px;"></div>
+<h3>transparent</h3>
+<div id="wrap4" style="margin-bottom:50px;"></div>
+<h3>hsba(22,100,100,0.7)</h3>
+<div id="wrap5" style="margin-bottom:50px;"></div>
+<h3>hsb(22,100,100)</h3>
+<div id="wrap6" style="margin-bottom:50px;"></div>
+<h3>blue</h3>
+<div id="wrap7" style="margin-bottom:50px;"></div>
+<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js" charset="utf-8"></script>
+<script>
+    YUI({
+        modules:{
+            'codecola-color-css':{
+                fullpath: 'codecola-color.css',
+                type: 'css'
+            },
+            'codecola-color': {
+                fullpath: 'codecola-color.js',
+                requires: ['node', 'widget', 'widget-stack', 'codecola-color-css']
+            }
+        }
+    }).use('codecola-color', function(Y) {
+        var color = new Y.codecolaColor({
+            'wrap': '#wrap',
+            'color' : '#f00',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color.render();
+
+        var color2 = new Y.codecolaColor({
+            'wrap': '#wrap2',
+            'color' : 'rgb(100,204,204)',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color2.render();
+
+        var color3 = new Y.codecolaColor({
+            'wrap': '#wrap3',
+            'color' : 'rgba(0,255,0,0.5)',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color3.render();
+
+        var color4 = new Y.codecolaColor({
+            'wrap': '#wrap4',
+            'color' : 'transparent',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color4.render();
+
+        var color5 = new Y.codecolaColor({
+            'wrap': '#wrap5',
+            'color' : 'hsba(22,100,100,0.7)',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color5.render();
+
+        var color6 = new Y.codecolaColor({
+            'wrap': '#wrap6',
+            'color' : 'hsb(22,100,100)',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color6.render();
+
+        var color7 = new Y.codecolaColor({
+            'wrap': '#wrap7',
+            'color' : 'blue',
+            'afterChange' : function(color) {
+                Y.one('#actor').setStyle('backgroundColor',color);
+            }
+        });
+        color7.render();
+    });
+</script>
+</body>
+</html>

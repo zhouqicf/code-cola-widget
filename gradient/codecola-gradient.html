@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Gradient control</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+</head>
+<body>
+<div id="test" style="height:100px;border:1px solid #999;margin-bottom:10px;"></div>
+<div id="wrap"></div>
+<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js" charset="utf-8"></script>
+<script>
+YUI({
+    modules: {
+        'codecola-color-css': {
+            fullpath: '/code-cola-widget/color/codecola-color.css',
+            type: 'css'
+        },
+        'codecola-color': {
+            fullpath: '/code-cola-widget/color/codecola-color.js',
+            requires: ['node', 'widget', 'widget-stack', 'codecola-color-css']
+        },
+        'codecola-gradient-css': {
+            fullpath: 'codecola-gradient.css',
+            type: 'css'
+        },
+        'codecola-gradient': {
+            fullpath: 'codecola-gradient.js',
+            requires: ['codecola-color', 'node', 'widget', 'ua', 'codecola-gradient-css']
+        }
+    }
+}).use('codecola-gradient', function(Y) {
+    var gradient = new Y.codecolaGradient({
+        wrap: "#wrap",
+        afterChange : function(v){
+            Y.one('#test').setStyle("backgroundImage",v);
+        }
+    });
+    gradient.render();
+});
+</script>
+</body>
+</html>
