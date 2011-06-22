@@ -48,7 +48,6 @@ YUI().add('codecola-color', function(Y) {
                 'bRange': Y.one('#codecola-color-hsbB-' + idRandom),
                 'aRange': Y.one('#codecola-color-hsbA-' + idRandom)
             };
-
         },
 
         bindUI: function(){

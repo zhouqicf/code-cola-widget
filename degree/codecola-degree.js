@@ -40,7 +40,7 @@ YUI().add('codecola-degree', function(Y) {
             var that = this,
                 drag = false,
                 vars = that.vars,
-                doc = Y.one('document');
+                doc = Y.one('html');
             vars.degree.on('click', function(e) {
                 that.setDegree(that._countDegree(e));
             });
