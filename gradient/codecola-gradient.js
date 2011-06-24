@@ -5,9 +5,6 @@
  * @namespace Y.codecolaGradient
  * @extends Widget
  * @requires codecola-color node widget ua codecola-gradient-css
- * @author zhouqicf@gmail.com
- * @site www.zhouqicf.com
- * @version 2-0-0
  */
 YUI().add('codecola-gradient', function(Y) {
     Y.codecolaGradient = Y.Base.create('codecola-gradient', Y.Widget, [], {

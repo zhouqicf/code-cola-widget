@@ -5,9 +5,6 @@
  * @namespace Y.codecolaColor
  * @extends Widget
  * @requires node widget codecola-color-css
- * @author zhouqicf@gmail.com
- * @site www.zhouqicf.com
- * @version 2-0-0
  */
 YUI().add('codecola-color', function(Y) {
     Y.codecolaColor = Y.Base.create('codecola-color', Y.Widget, [], {

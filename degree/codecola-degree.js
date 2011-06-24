@@ -5,9 +5,6 @@
  * @namespace Y.codecolaDegree
  * @extends Widget
  * @requires node widget codecola-degree-css
- * @author zhouqicf@gmail.com
- * @site www.zhouqicf.com
- * @version 2-0-0
  */
 YUI().add('codecola-degree', function(Y) {
     Y.codecolaDegree = Y.Base.create('codecola-degree', Y.Widget, [], {
