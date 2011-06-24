@@ -1,10 +1,3 @@
-@charset "utf-8";
-/**
-  *@name:codecola degree widget
-  *@author:zhouqicf@gmail.com
-  *@site:www.zhouqicf.com
-  *@version:2-0-0
-  */
 .codecola-degree-wrap{
     font-size:12px;
     color:#000;
@@ -42,7 +35,6 @@
 }
 .codecola-degree-input{
     width:45px;
-    margin-right:5px;
 }
 .codecola-degree-dot{
     position:absolute;

@@ -1,12 +1,22 @@
+/*
+Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
+Code licensed under the MIT License:
+version: 1.0.0
+*/
 /**
  * a degree control for css3 property
- * @class codecola-degree
- * @constructor
- * @namespace Y.codecolaDegree
- * @extends Widget
- * @requires node widget codecola-degree-css
+ * @module codecola-degree
  */
 YUI().add('codecola-degree', function(Y) {
+    /**
+     * a degree control for css3 property
+     * @param config {Object} Object literal specifying codecolaDegree configuration properties.
+     * @class codecolaDegree
+     * @constructor
+     * @namespace Y
+     * @extends Widget
+     * @requires node widget codecola-degree-css
+     */
     Y.codecolaDegree = Y.Base.create('codecola-degree', Y.Widget, [], {
         initializer: function() {
         },
@@ -14,12 +24,12 @@ YUI().add('codecola-degree', function(Y) {
         renderUI: function() {
             var that = this;
             that.vars = {
-                'degreeWrap' : Y.Node.create('<div class="codecola-degree-wrap"></div>'),
-                'degree' : Y.Node.create('<div class="codecola-degree"></div>'),
-                'line' : Y.Node.create('<i class="codecola-degree-line"></i>'),
-                'dot' : Y.Node.create('<b class="codecola-degree-dot"></b>'),
-                'label' : Y.Node.create('<label class="codecola-degree-label"></label>'),
-                'input' : Y.Node.create('<input type="number" class="codecola-degree-input" step="1" max="180" min="-180">')
+                degreeWrap : Y.Node.create('<div class="codecola-degree-wrap"></div>'),
+                degree : Y.Node.create('<div class="codecola-degree"></div>'),
+                line : Y.Node.create('<i class="codecola-degree-line"></i>'),
+                dot : Y.Node.create('<b class="codecola-degree-dot"></b>'),
+                label : Y.Node.create('<label class="codecola-degree-label"></label>'),
+                input : Y.Node.create('<input type="number" class="codecola-degree-input" step="1" max="180" min="-180">')
             };
             var val = that.vars,
                 degreeWrap = val.degreeWrap,
@@ -30,7 +40,7 @@ YUI().add('codecola-degree', function(Y) {
                 input = val.input;
 
             degree.append(line).append(dot);
-            label.append(input).append(Y.Node.create('度'));
+            label.append(input);
             degreeWrap.append(degree).append(label);
             Y.one(that.get('wrap')).append(degreeWrap);
 
@@ -44,7 +54,7 @@ YUI().add('codecola-degree', function(Y) {
                 doc = Y.one('html');
             vars.degree.on('click', function(e) {
                 that.setDegree({
-                    value: that._countDegree(e)
+                    degree: that._calculateDegree(e)
                 });
             });
             vars.degree.on('mousedown', function(e) {
@@ -60,12 +70,12 @@ YUI().add('codecola-degree', function(Y) {
                     return;
                 }
                 that.setDegree({
-                    value: that._countDegree(e)
+                    degree: that._calculateDegree(e)
                 });
             });
             vars.input.on('change', function() {
                 that.setDegree({
-                    value: this.get('value')
+                    degree: this.get('value')
                 });
             });
             return that;
@@ -82,12 +92,13 @@ YUI().add('codecola-degree', function(Y) {
         },
 
         /**
-         * @method _countDegree
+         * Calculate degree
+         * @method _calculateDegree
          * @private
          * @param {Event}
          * @return {Number}
          */
-        _countDegree: function(e) {
+        _calculateDegree: function(e) {
             var dot = this.vars.dot,
                 dotXY = dot.getXY(),
                 offset = {};
@@ -97,8 +108,11 @@ YUI().add('codecola-degree', function(Y) {
 
             return - Math.ceil(Math.atan2(offset.y, offset.x) * (360 / (2 * Math.PI)));
         },
+
         /**
+         * init all controls
          * @method _initControls
+         * @private
          * @chainable
          */
         _initControls: function() {
@@ -116,16 +130,22 @@ YUI().add('codecola-degree', function(Y) {
             that.vars.input.set('value', degree);
             return that;
         },
+
         /**
+         * update the attribute 'degree', init all the controls, fire the onChange event
          * @method setDegree
-         * @param {Object}
+         * @param {Object} param.degree for update the attribute 'degree'
          * @chainable
          */
         setDegree: function(param) {
-            this.set('degree', param.value)._initControls()._fireCallback();
+            this.set('degree', param.degree)._initControls()._fireCallback();
             return this;
         },
+
+        //TODO: add able and disable method
+
         /**
+         * fire the onChange event
          * @method _fireCallback
          * @private
          * @chainable
@@ -140,7 +160,7 @@ YUI().add('codecola-degree', function(Y) {
              * @attribute wrap
              * @type String
              * @default 'body'
-             * @description the wrap for controls to insert
+             * @description a css selector for <code>Y.one()</code>,controls will insert into the wrap
              */
             wrap: {
                 value: 'body',
@@ -150,7 +170,7 @@ YUI().add('codecola-degree', function(Y) {
              * @attribute degree
              * @type Number
              * @default 0
-             * @description degree for init
+             * @description degree for init, degree is a number from -180 to 180
              */
             degree: {
                 value: 0,

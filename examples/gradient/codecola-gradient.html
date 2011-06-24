@@ -13,19 +13,19 @@
 YUI({
     modules: {
         'codecola-color-css': {
-            fullpath: '/code-cola-widget/color/codecola-color.css',
+            fullpath: '/code-cola-widget/src/color/codecola-color.css',
             type: 'css'
         },
         'codecola-color': {
-            fullpath: '/code-cola-widget/color/codecola-color.js',
+            fullpath: '/code-cola-widget/src/color/codecola-color.js',
             requires: ['node', 'widget', 'widget-stack', 'codecola-color-css']
         },
         'codecola-gradient-css': {
-            fullpath: 'codecola-gradient.css',
+            fullpath: '/code-cola-widget/src/gradient/codecola-gradient.css',
             type: 'css'
         },
         'codecola-gradient': {
-            fullpath: 'codecola-gradient.js',
+            fullpath: '/code-cola-widget/src/gradient/codecola-gradient.js',
             requires: ['codecola-color', 'node', 'widget', 'ua', 'codecola-gradient-css']
         }
     }

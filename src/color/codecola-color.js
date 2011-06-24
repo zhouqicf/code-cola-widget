@@ -1,12 +1,22 @@
+/*
+Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
+Code licensed under the MIT License:
+version: 1.0.0
+*/
 /**
  * a color control for css3 property
- * @class codecola-color
- * @constructor
- * @namespace Y.codecolaColor
- * @extends Widget
- * @requires node widget codecola-color-css
+ * @module codecola-color
  */
 YUI().add('codecola-color', function(Y) {
+    /**
+     * a color control for css3 property
+     * @param config {Object} Object literal specifying codecolaColor configuration properties.
+     * @class codecolaColor
+     * @constructor
+     * @namespace Y
+     * @extends Widget
+     * @requires node widget codecola-color-css
+     */
     Y.codecolaColor = Y.Base.create('codecola-color', Y.Widget, [], {
         initializer: function() {
         },
@@ -94,7 +104,7 @@ YUI().add('codecola-color', function(Y) {
 
             vars.hsbInput.on('change', function() {
                 that.setColor({
-                    'value': this.get('value')
+                    color: this.get('value')
                 });
             });
 
@@ -103,6 +113,7 @@ YUI().add('codecola-color', function(Y) {
                 Y.all('.codecola-color-picker').setStyle('display', 'none');
                 vars.picker.setStyle('display', 'block');
             });
+            
             return that;
         },
 
@@ -209,6 +220,7 @@ YUI().add('codecola-color', function(Y) {
             return this;
         },
         /**
+         * init all controls
          * @method _initControls
          * @private
          * @chainable
@@ -219,6 +231,7 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
+         * update the this.vars.rule object
          * @method _initRule
          * @private
          * @chainable
@@ -243,28 +256,22 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
+         * update the attribute 'color', init all the controls, fire the onChange event
          * @method setColor
-         * @param {Object} param
+         * @param {Object} param.color for update the attribute 'color'
          * @chainable
          */
         setColor: function(param) {
-            this.set('color', param.value);
+            this.set('color', param.color);
             this.syncUI()._fireCallback();
-            return this;
-        },
-        /**
-         * @method _fireCallback
-         * @private
-         * @chainable
-         */
-        _fireCallback: function() {
-            this.get('onChange')(this.getColor(this.get('isAll')));
             return this;
         },
 
         /**
+         * return the current rgba or rgb color
+         * return {String} rgba when the broswer is support rgba, if not return {String} rgb, return {Object} <code>{rgba:xxx, rgb:xxx}</code> when param 'isAll' is <code>ture</code>
          * @method getColor
-         * @param {Boolean} if return rgba and rgb
+         * @param {Boolean} if return {rgba:xxx, rgb:xxx}
          * @return {String|Object}
          */
         getColor: function(isAll) {
@@ -286,11 +293,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
+         * change the color type from nType to oType
          * @method changeColor
-         * @param color {String ｜ Object}
-         * @param nType {String} hex/rgb/rgba/hsb/hsba
-         * @param oType {String} hex/rgb/rgba/hsb/hsba
-         * @return {String ｜ Object}
+         * @param color {String|Object}
+         * @param nType {String} hex|rgb|rgba|hsb|hsba
+         * @param oType {String} hex|rgb|rgba|hsb|hsba
+         * @return {String|Object} return Object when rgb|rgba|hsb|hsba, return String when hex
          */
         changeColor: function(color, nType, oType) {
             var that = this;
@@ -314,9 +322,9 @@ YUI().add('codecola-color', function(Y) {
             switch (oType) {
                 case 'hsba':
                     if (nType == 'hex') {
-                        return that.rgbToHex(that.hsbToRgb(color));
+                        return that.rgbToHex(that.hsbToRgba(color));
                     } else if (nType == 'rgba') {
-                        return that.hsbToRgb(color);
+                        return that.hsbToRgba(color);
                     } else if (nType == 'hsba' && typeof color == 'string'){
                         var _hsba = color.replace(/(hsba?){0,1}\(|\)/g, '').split(',');
                         return {
@@ -329,14 +337,14 @@ YUI().add('codecola-color', function(Y) {
                     break;
                 case 'hex':
                     if (nType == 'hsba') {
-                        return that.rgbToHsb(that.hexToRgb(that.hexToComplate(color)));
+                        return that.rgbToHsba(that.hexToRgba(color));
                     } else if (nType == 'rgba') {
-                        return that.hexToRgb(that.hexToComplate(color));
+                        return that.hexToRgba(color);
                     }
                     break;
                 case 'rgba':
                     if (nType == 'hsba') {
-                        return that.rgbToHsb(color);
+                        return that.rgbToHsba(color);
                     } else if (nType == 'hex') {
                         return that.rgbToHex(color);
                     }
@@ -349,28 +357,30 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
+         * get the color's type, rgb is return rgba too
          * @method getColorType
-         * @param {String ｜ Object}
-         * @return {String}
+         * @param {String|Object}
+         * @return {String} hsba|hex|rgba, or return 'error'
          */
         getColorType: function(color) {
             var that = this;
-            if (that.ensureHSBA(color) || that.ensureHSB(color)) {
+            if (that.isHSBA(color) || that.isHSB(color)) {
                 return 'hsba';
-            } else if (that.ensureHEX(color)) {
+            } else if (that.isHEX(color)) {
                 return 'hex';
-            } else if (that.ensureRGB(color) || that.ensureRGBA(color)) {
+            } else if (that.isRGB(color) || that.isRGBA(color)) {
                 return 'rgba';
             } 
             return 'error';
         },
 
         /**
-         * @method ensureHSB
-         * @param {String ｜ Object}
+         * if the color is hsb
+         * @method isHSB
+         * @param {String|Object}
          * @return {Boolean}
          */
-        ensureHSB: function(hsb) {
+        isHSB: function(hsb) {
             var reg = /^\d$|^[1-9]\d$|^100$/;
             if (typeof hsb == 'object' && reg.test(hsb.h) && reg.test(hsb.s) && reg.test(hsb.b)) {
                 return true;
@@ -381,11 +391,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method ensureHSBA
-         * @param {String ｜ Object}
+         * if the color is hsba
+         * @method isHSBA
+         * @param {String|Object}
          * @return {Boolean}
          */
-        ensureHSBA: function(hsba) {
+        isHSBA: function(hsba) {
             var reg = /^\d$|^[1-9]\d$|^100$/;
             if (typeof hsba == 'object' && /^\d$|^[1-9]\d$|^[1-2]\d{2}$|^3[0-5]\d$|^360$/.test(hsba.h) && reg.test(hsba.s) && reg.test(hsba.b) && /^0|1|0\.\d+$/.test(hsba.a)) {
                 return true;
@@ -396,11 +407,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method ensureHEX
-         * @param {String ｜ Object}
+         * if the color is hex
+         * @method isHEX
+         * @param {String|Object}
          * @return {Boolean}
          */
-        ensureHEX: function(hex) {
+        isHEX: function(hex) {
             if (typeof hex == 'string' && /^#[0-9a-fA-F]{6}$|^#[0-9a-fA-F]{3}$/.test(hex)) {
                 return true;
             }
@@ -408,11 +420,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method ensureRGB
-         * @param {String ｜ Object}
+         * if the color is hsb
+         * @method isRGB
+         * @param {String|Object}
          * @return {Boolean}
          */
-        ensureRGB: function(rgb) {
+        isRGB: function(rgb) {
             var reg = /^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/;
             if (typeof rgb == 'object' && reg.test(rgb.r) && reg.test(rgb.g) && reg.test(rgb.b)) {
                 return true;
@@ -423,11 +436,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method ensureRGBA
-         * @param {String ｜ Object}
+         * if the color is rgba
+         * @method isRGBA
+         * @param {String|Object}
          * @return {Boolean}
          */
-        ensureRGBA: function(rgba) {
+        isRGBA: function(rgba) {
             var reg = /^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/;
             if (typeof rgba == 'object' && reg.test(rgba.r) && reg.test(rgba.g) && reg.test(rgba.b) && /^0|1|0\.\d+$/.test(rgba.a)) {
                 return true;
@@ -440,32 +454,9 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * hide color picker, disable text input
-         * @method disable
-         * @chainable
-         */
-        disable: function() {
-            var controls = this.vars;
-            controls.hsbInput.set('disabled', true);
-            controls.picker.setStyle('display', 'none');
-            return this;
-        },
-
-        /**
-         * show color picker, able text input
-         * @method able
-         * @chainable
-         */
-        able: function() {
-            var controls = this.vars;
-            controls.hsbInput.set('disabled', false);
-            controls.picker.setStyle('display', 'block');
-            return this;
-        },
-
-        /**
+         * transform rgb or rgba to hex
          * @method rgbToHex
-         * @param {Object}
+         * @param {Object} support rgb or rgba
          * @return {String}
          */
         rgbToHex: function(rgb) {
@@ -479,11 +470,13 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method hexToRgb
+         * transform hex to rgba
+         * @method hexToRgba
          * @param {String}
          * @return {Object}
          */
-        hexToRgb: function(hex) {
+        hexToRgba: function(hex) {
+            hex = this.hexToComplate(hex);
             return {
                 r: parseInt(hex.substring(1, 3), 16),
                 g: parseInt(hex.substring(3, 5), 16),
@@ -493,11 +486,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method rgbToHsb
-         * @param {String | Object}
+         * transform rgb or rgba to hsba
+         * @method rgbToHsba
+         * @param {String|Object} support rgb or rgba
          * @return {Object}
          */
-        rgbToHsb: function(rgba) {
+        rgbToHsba: function(rgba) {
             if (typeof rgba == 'string') {
                 rgba = rgba.replace(/rgba{0,1}\(|\)/g, '').split(',');
                 rgba = {
@@ -552,11 +546,12 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
-         * @method hsbToRgb
-         * @param {String | Object}
+         * transform hsb or hsba to rgba
+         * @method hsbToRgba
+         * @param {String|Object} support hsb and hsba color
          * @return {Object}
          */
-        hsbToRgb: function(hsba) {
+        hsbToRgba: function(hsba) {
             if (typeof hsba == 'string') {
                 hsba = hsba.replace(/hsba{0,1}\(|\)/g, '').split(',');
                 hsba = {
@@ -627,6 +622,7 @@ YUI().add('codecola-color', function(Y) {
         },
 
         /**
+         * transform hex color <code>#fff</code> to <code>#ffffff</code>
          * @method hexToComplate
          * @param {String}
          * @return {String}
@@ -644,6 +640,41 @@ YUI().add('codecola-color', function(Y) {
             } else {
                 return hex;
             }
+        },
+
+        /**
+         * hide color picker, disable text input
+         * @method disable
+         * @chainable
+         */
+        disable: function() {
+            var controls = this.vars;
+            controls.hsbInput.set('disabled', true);
+            controls.picker.setStyle('display', 'none');
+            return this;
+        },
+
+        /**
+         * show color picker, able text input
+         * @method able
+         * @chainable
+         */
+        able: function() {
+            var controls = this.vars;
+            controls.hsbInput.set('disabled', false);
+            controls.picker.setStyle('display', 'block');
+            return this;
+        },
+
+        /**
+         * fire the onChange event
+         * @method _fireCallback
+         * @private
+         * @chainable
+         */
+        _fireCallback: function() {
+            this.get('onChange')(this.getColor(this.get('isAll')));
+            return this;
         }
     },{
         /**
@@ -659,7 +690,7 @@ YUI().add('codecola-color', function(Y) {
         /**
          * @attribute keywords
          * @type Object
-         * @description color keywords
+         * @description color <a href="http://www.w3.org/TR/css3-color/#svg-color">keywords</a> from <a href="http://www.w3.org/TR/SVG/types.html#ColorKeywords">SVG 1.0 color keyword names</a>
          */
         keywords: {
             'aliceblue': [240, 248, 255],
@@ -815,7 +846,7 @@ YUI().add('codecola-color', function(Y) {
              * @attribute wrap
              * @type String
              * @default 'body'
-             * @description the wrap for controls to insert
+             * @description a css selector for <code>Y.one()</code>,controls will insert into the wrap
              */
             wrap: {
                 value: '',
@@ -825,7 +856,7 @@ YUI().add('codecola-color', function(Y) {
              * @attribute color
              * @type String
              * @default 'transparent'
-             * @description color for init
+             * @description color for init, support rgba|rgb|hsb|hsba|hex|<a href="http://www.w3.org/TR/css3-color/#svg-color">keywords</a>|"transparent"
              */
             color: {
                 value: 'transparent',
@@ -856,7 +887,7 @@ YUI().add('codecola-color', function(Y) {
              * @attribute onChange
              * @type Function
              * @default function(){}
-             * @description callback when degree change
+             * @description callback when color change
              */
             onChange: {
                 value: function() {

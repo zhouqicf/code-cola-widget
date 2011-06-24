@@ -1,0 +1,900 @@
+<div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.</span>
+<span class="cm">Code licensed under the MIT License:</span>
+<span class="cm">version: 1.0.0</span>
+<span class="cm">*/</span>
+<span class="cm">/**</span>
+<span class="cm"> * a color control for css3 property</span>
+<span class="cm"> * @module codecola-color</span>
+<span class="cm"> */</span>
+<span class="nx">YUI</span><span class="p">().</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * a color control for css3 property</span>
+<span class="cm">     * @param config {Object} Object literal specifying codecolaColor configuration properties.</span>
+<span class="cm">     * @class codecolaColor</span>
+<span class="cm">     * @constructor</span>
+<span class="cm">     * @namespace Y</span>
+<span class="cm">     * @extends Widget</span>
+<span class="cm">     * @requires node widget codecola-color-css</span>
+<span class="cm">     */</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">codecolaColor</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Base</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span> <span class="p">[],</span> <span class="p">{</span>
+        <span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">},</span>
+
+        <span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">idRandom</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">(),</span>
+                <span class="nx">html</span> <span class="o">=</span> <span class="s1">&#39;&lt;span class=&quot;codecola-color-transparent&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;codecola-color-input-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; class=&quot;codecola-color-input&quot; name=&quot;color-picker&quot;&gt;&lt;/span&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;ol class=&quot;codecola-color-picker&quot; id=&quot;codecola-color-picker-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;    &#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;li class=&quot;codecola-color-hsb codecola-color-hsbH&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-current&quot;&gt;&lt;label for=&quot;codecola-color-hsbH-curren-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;Hue:&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;codecola-color-hsbH-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; step=&quot;1&quot; min=&quot;0&quot; max=&quot;360&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-img&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-range&quot;&gt;&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;360&quot; id=&quot;codecola-color-hsbH-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/li&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;li class=&quot;codecola-color-hsb codecola-color-hsbS&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-current&quot;&gt;&lt;label for=&quot;codecola-color-hsbS-curren-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;Saturation:&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;codecola-color-hsbS-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; step=&quot;1&quot; min=&quot;0&quot; max=&quot;100&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-img&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-range&quot;&gt;&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; id=&quot;codecola-color-hsbS-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/li&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;li class=&quot;codecola-color-hsb codecola-color-hsbB&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-current&quot;&gt;&lt;label for=&quot;codecola-color-hsbB-curren-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;Lightness:&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;codecola-color-hsbB-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; step=&quot;1&quot; min=&quot;0&quot; max=&quot;100&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-img&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-range&quot;&gt;&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; id=&quot;codecola-color-hsbB-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/li&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;li class=&quot;codecola-color-hsb codecola-color-hsbA&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-current&quot;&gt;&lt;label for=&quot;codecola-color-hsbA-curren-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;Aphla:&lt;/label&gt;&lt;input type=&quot;number&quot; id=&quot;codecola-color-hsbA-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; step=&quot;0.01&quot; min=&quot;0&quot; max=&quot;1&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    &lt;div class=&quot;codecola-color-hsb-range&quot;&gt;&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; id=&quot;codecola-color-hsbA-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span> <span class="o">+</span> <span class="s1">&#39;&quot; step=&quot;0.01&quot;/&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/li&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/ol&gt;&#39;</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">editorWrap</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;codecola-color-editorWrap-&#39;</span><span class="o">+</span><span class="nx">idRandom</span><span class="o">+</span><span class="s1">&#39;&quot; class=&quot;codecola-color-editorWrap&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">html</span><span class="o">+</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">);</span>
+
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;wrap&#39;</span><span class="p">)).</span><span class="nx">append</span><span class="p">(</span><span class="nx">editorWrap</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;picker&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-picker-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;hsbInput&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-input-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;hCurren&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbH-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;sCurren&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbS-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;bCurren&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbB-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;aCurren&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbA-current-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;hRange&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbH-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;sRange&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbS-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;bRange&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbB-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;aRange&#39;</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#codecola-color-hsbA-&#39;</span> <span class="o">+</span> <span class="nx">idRandom</span><span class="p">),</span>
+                <span class="s1">&#39;rule&#39;</span><span class="o">:</span> <span class="p">{}</span>
+            <span class="p">};</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="nx">bindUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+                <span class="nx">vars</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">vars</span><span class="p">,</span>
+                <span class="nx">currentRanges</span> <span class="o">=</span> <span class="p">[</span><span class="nx">vars</span><span class="p">.</span><span class="nx">hCurren</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">sCurren</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">bCurren</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">aCurren</span><span class="p">],</span>
+                <span class="nx">colorRanges</span> <span class="o">=</span> <span class="p">[</span><span class="nx">vars</span><span class="p">.</span><span class="nx">hRange</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">sRange</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">bRange</span><span class="p">,</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">aRange</span><span class="p">];</span>
+
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">currentRanges</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">){</span>
+                <span class="nx">node</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+                    <span class="kd">var</span> <span class="nx">hsba</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="nx">h</span><span class="o">:</span> <span class="nx">currentRanges</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">s</span><span class="o">:</span> <span class="nx">currentRanges</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">b</span><span class="o">:</span> <span class="nx">currentRanges</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">a</span><span class="o">:</span> <span class="nx">currentRanges</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+                        <span class="p">},</span>
+                        <span class="nx">_initRangeHSB</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_initRangeH&#39;</span><span class="p">,</span> <span class="s1">&#39;_initRangeS&#39;</span><span class="p">,</span> <span class="s1">&#39;_initRangeB&#39;</span><span class="p">,</span> <span class="s1">&#39;_initRangeA&#39;</span><span class="p">];</span>
+
+                    <span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">;</span>
+                    <span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">rgba</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">changeColor</span><span class="p">(</span><span class="nx">hsba</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;hsba&#39;</span><span class="p">);</span>
+                    <span class="nx">that</span><span class="p">[</span><span class="nx">_initRangeHSB</span><span class="p">[</span><span class="nx">index</span><span class="p">]]().</span><span class="nx">_initInput</span><span class="p">().</span><span class="nx">_fireCallback</span><span class="p">();</span>
+                <span class="p">});</span>
+            <span class="p">});</span>
+
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">colorRanges</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">){</span>
+                <span class="nx">node</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+                    <span class="kd">var</span> <span class="nx">hsba</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="nx">h</span><span class="o">:</span> <span class="nx">colorRanges</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">s</span><span class="o">:</span> <span class="nx">colorRanges</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">b</span><span class="o">:</span> <span class="nx">colorRanges</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+                            <span class="nx">a</span><span class="o">:</span> <span class="nx">colorRanges</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+                        <span class="p">},</span>
+                        <span class="nx">_initCurrentHSB</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_initCurrentH&#39;</span><span class="p">,</span> <span class="s1">&#39;_initCurrentS&#39;</span><span class="p">,</span> <span class="s1">&#39;_initCurrentB&#39;</span><span class="p">,</span> <span class="s1">&#39;_initCurrentA&#39;</span><span class="p">];</span>
+
+                    <span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">;</span>
+                    <span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">rgba</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">changeColor</span><span class="p">(</span><span class="nx">hsba</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;hsba&#39;</span><span class="p">);</span>
+                    <span class="nx">that</span><span class="p">[</span><span class="nx">_initCurrentHSB</span><span class="p">[</span><span class="nx">index</span><span class="p">]]().</span><span class="nx">_initInput</span><span class="p">().</span><span class="nx">_fireCallback</span><span class="p">();</span>
+                <span class="p">});</span>
+            <span class="p">});</span>
+
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">hsbInput</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">that</span><span class="p">.</span><span class="nx">setColor</span><span class="p">({</span>
+                    <span class="nx">color</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+                <span class="p">});</span>
+            <span class="p">});</span>
+
+            <span class="c1">//TODO</span>
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">hsbInput</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;focus&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.codecola-color-picker&#39;</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+                <span class="nx">vars</span><span class="p">.</span><span class="nx">picker</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">);</span>
+            <span class="p">});</span>
+            
+            <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="nx">syncUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_initRule</span><span class="p">().</span><span class="nx">_initControls</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="nx">renderer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">renderUI</span><span class="p">().</span><span class="nx">bindUI</span><span class="p">().</span><span class="nx">syncUI</span><span class="p">().</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;onInit&#39;</span><span class="p">)();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initInput</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initInput</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">hsbInput</span><span class="p">,</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getColor</span><span class="p">();</span>
+            <span class="nx">input</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+            <span class="nx">input</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initRangeH</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initRangeH</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">hRange</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">h</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initRangeS</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initRangeS</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">sRange</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">s</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initRangeB</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initRangeB</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">bRange</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initRangeA</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initRangeA</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">aRange</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initCurrentH</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initCurrentH</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">hCurren</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">h</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initCurrentS</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initCurrentS</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">sCurren</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">s</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initCurrentB</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initCurrentB</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">bCurren</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * @method _initCurrentA</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initCurrentA</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">aCurren</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="cm">/**</span>
+<span class="cm">         * init all controls</span>
+<span class="cm">         * @method _initControls</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initControls</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_initInput</span><span class="p">().</span><span class="nx">_initRangeH</span><span class="p">().</span><span class="nx">_initRangeS</span><span class="p">().</span><span class="nx">_initRangeB</span><span class="p">().</span><span class="nx">_initRangeA</span><span class="p">().</span><span class="nx">_initCurrentH</span><span class="p">().</span><span class="nx">_initCurrentS</span><span class="p">().</span><span class="nx">_initCurrentB</span><span class="p">().</span><span class="nx">_initCurrentA</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * update the this.vars.rule object</span>
+<span class="cm">         * @method _initRule</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_initRule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="kd">var</span>
+            <span class="nx">color</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">),</span>
+            <span class="nx">hsba</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">changeColor</span><span class="p">(</span><span class="nx">color</span><span class="p">,</span> <span class="s1">&#39;hsba&#39;</span><span class="p">),</span>
+            <span class="nx">rgba</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">changeColor</span><span class="p">(</span><span class="nx">hsba</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;hsba&#39;</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">rgba</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;error color&#39;</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nx">rgba</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">,</span>
+                <span class="nx">hsba</span><span class="o">:</span> <span class="nx">hsba</span>
+            <span class="p">};</span>
+
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * update the attribute &#39;color&#39;, init all the controls, fire the onChange event</span>
+<span class="cm">         * @method setColor</span>
+<span class="cm">         * @param {Object} param.color for update the attribute &#39;color&#39;</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">setColor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="nx">param</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">syncUI</span><span class="p">().</span><span class="nx">_fireCallback</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * return the current rgba or rgb color</span>
+<span class="cm">         * return {String} rgba when the broswer is support rgba, if not return {String} rgb, return {Object} &lt;code&gt;{rgba:xxx, rgb:xxx}&lt;/code&gt; when param &#39;isAll&#39; is &lt;code&gt;ture&lt;/code&gt;</span>
+<span class="cm">         * @method getColor</span>
+<span class="cm">         * @param {Boolean} if return {rgba:xxx, rgb:xxx}</span>
+<span class="cm">         * @return {String|Object}</span>
+<span class="cm">         */</span>
+        <span class="nx">getColor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">isAll</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">rgba</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">.</span><span class="nx">rule</span><span class="p">.</span><span class="nx">rgba</span><span class="p">,</span><span class="nx">rgb</span><span class="p">;</span>
+            <span class="nx">rgba</span> <span class="o">=</span> <span class="s1">&#39;rgba(&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">g</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">b</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">a</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="nx">rgb</span> <span class="o">=</span> <span class="s1">&#39;rgb(&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">g</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">b</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">isAll</span><span class="p">){</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="nx">rgba</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">,</span>
+                    <span class="nx">rgb</span><span class="o">:</span> <span class="nx">rgb</span>
+                <span class="p">}</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">codecolaColor</span><span class="p">.</span><span class="nx">isSupportRGBA</span><span class="p">){</span>
+                    <span class="k">return</span> <span class="nx">rgba</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">rgb</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * change the color type from nType to oType</span>
+<span class="cm">         * @method changeColor</span>
+<span class="cm">         * @param color {String|Object}</span>
+<span class="cm">         * @param nType {String} hex|rgb|rgba|hsb|hsba</span>
+<span class="cm">         * @param oType {String} hex|rgb|rgba|hsb|hsba</span>
+<span class="cm">         * @return {String|Object} return Object when rgb|rgba|hsb|hsba, return String when hex</span>
+<span class="cm">         */</span>
+        <span class="nx">changeColor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">,</span> <span class="nx">nType</span><span class="p">,</span> <span class="nx">oType</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="sr">/^transparent$/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">color</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">r</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="nx">g</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="nx">b</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="nx">a</span><span class="o">:</span> <span class="mi">0</span>
+                <span class="p">};</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">color</span> <span class="k">in</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">codecolaColor</span><span class="p">.</span><span class="nx">keywords</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">codecolaColor</span><span class="p">.</span><span class="nx">keywords</span><span class="p">[</span><span class="nx">color</span><span class="p">];</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">r</span><span class="o">:</span> <span class="nx">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="nx">g</span><span class="o">:</span> <span class="nx">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="nx">b</span><span class="o">:</span> <span class="nx">color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="nx">oType</span> <span class="o">=</span> <span class="nx">oType</span> <span class="o">?</span> <span class="nx">oType</span> <span class="o">:</span> <span class="nx">that</span><span class="p">.</span><span class="nx">getColorType</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="nx">oType</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="s1">&#39;hsba&#39;</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">rgbToHex</span><span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">hsbToRgba</span><span class="p">(</span><span class="nx">color</span><span class="p">));</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;rgba&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">hsbToRgba</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;hsba&#39;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">color</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">){</span>
+                        <span class="kd">var</span> <span class="nx">_hsba</span> <span class="o">=</span> <span class="nx">color</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(hsba?){0,1}\(|\)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="p">{</span>
+                            <span class="nx">h</span><span class="o">:</span> <span class="nx">_hsba</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="nx">s</span><span class="o">:</span> <span class="nx">_hsba</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="nx">b</span><span class="o">:</span> <span class="nx">_hsba</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="nx">a</span><span class="o">:</span> <span class="k">typeof</span> <span class="nx">_hsba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">_hsba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">:</span> <span class="mi">1</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="s1">&#39;hex&#39;</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;hsba&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">rgbToHsba</span><span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">hexToRgba</span><span class="p">(</span><span class="nx">color</span><span class="p">));</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;rgba&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">hexToRgba</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="s1">&#39;rgba&#39;</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;hsba&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">rgbToHsba</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nType</span> <span class="o">==</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">rgbToHex</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">default</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="s1">&#39;error&#39;</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">color</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * get the color&#39;s type, rgb is return rgba too</span>
+<span class="cm">         * @method getColorType</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {String} hsba|hex|rgba, or return &#39;error&#39;</span>
+<span class="cm">         */</span>
+        <span class="nx">getColorType</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">isHSBA</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">||</span> <span class="nx">that</span><span class="p">.</span><span class="nx">isHSB</span><span class="p">(</span><span class="nx">color</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="s1">&#39;hsba&#39;</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">isHEX</span><span class="p">(</span><span class="nx">color</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="s1">&#39;hex&#39;</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">isRGB</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">||</span> <span class="nx">that</span><span class="p">.</span><span class="nx">isRGBA</span><span class="p">(</span><span class="nx">color</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="s1">&#39;rgba&#39;</span><span class="p">;</span>
+            <span class="p">}</span> 
+            <span class="k">return</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * if the color is hsb</span>
+<span class="cm">         * @method isHSB</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {Boolean}</span>
+<span class="cm">         */</span>
+        <span class="nx">isHSB</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hsb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/^\d$|^[1-9]\d$|^100$/</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hsb</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsb</span><span class="p">.</span><span class="nx">h</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsb</span><span class="p">.</span><span class="nx">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsb</span><span class="p">.</span><span class="nx">b</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hsb</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^hsb\((\d|[1-9]\d|[1-2]\d{2}|3[0-5]\d|360)\,(\d|[1-9]\d|100)\,(\d|[1-9]\d|100)\)$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsb</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * if the color is hsba</span>
+<span class="cm">         * @method isHSBA</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {Boolean}</span>
+<span class="cm">         */</span>
+        <span class="nx">isHSBA</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hsba</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/^\d$|^[1-9]\d$|^100$/</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hsba</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^\d$|^[1-9]\d$|^[1-2]\d{2}$|^3[0-5]\d$|^360$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">h</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/^0|1|0\.\d+$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">a</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hsba</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^hsba\((\d|[1-9]\d|[1-2]\d{2}|3[0-5]\d|360)\,((\d|[1-9]\d|100)\,){2}(0|1|0\.\d+)\)/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hsba</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * if the color is hex</span>
+<span class="cm">         * @method isHEX</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {Boolean}</span>
+<span class="cm">         */</span>
+        <span class="nx">isHEX</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hex</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hex</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^#[0-9a-fA-F]{6}$|^#[0-9a-fA-F]{3}$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hex</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * if the color is hsb</span>
+<span class="cm">         * @method isRGB</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {Boolean}</span>
+<span class="cm">         */</span>
+        <span class="nx">isRGB</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rgb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">rgb</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">rgb</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^rgb\(((\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\,){2}(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\)$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgb</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * if the color is rgba</span>
+<span class="cm">         * @method isRGBA</span>
+<span class="cm">         * @param {String|Object}</span>
+<span class="cm">         * @return {Boolean}</span>
+<span class="cm">         */</span>
+        <span class="nx">isRGBA</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rgba</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">rgba</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">.</span><span class="nx">g</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/^0|1|0\.\d+$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">.</span><span class="nx">a</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="sr">/^rgba\(0\,\s?0\,\s?0\,\s?0\)$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">rgba</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">&amp;&amp;</span> <span class="sr">/^rgba\(((\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\,){3}(0|1|0\.\d+)\)/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">rgba</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * transform rgb or rgba to hex</span>
+<span class="cm">         * @method rgbToHex</span>
+<span class="cm">         * @param {Object} support rgb or rgba</span>
+<span class="cm">         * @return {String}</span>
+<span class="cm">         */</span>
+        <span class="nx">rgbToHex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rgb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">g</span><span class="p">,</span><span class="nx">rgb</span><span class="p">.</span><span class="nx">b</span><span class="p">],</span>
+                <span class="nx">hex</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">]).</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+                <span class="nx">hex</span> <span class="o">+=</span> <span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">:</span> <span class="nx">b</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">hex</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * transform hex to rgba</span>
+<span class="cm">         * @method hexToRgba</span>
+<span class="cm">         * @param {String}</span>
+<span class="cm">         * @return {Object}</span>
+<span class="cm">         */</span>
+        <span class="nx">hexToRgba</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hex</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">hexToComplate</span><span class="p">(</span><span class="nx">hex</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">r</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+                <span class="nx">g</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+                <span class="nx">b</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+                <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * transform rgb or rgba to hsba</span>
+<span class="cm">         * @method rgbToHsba</span>
+<span class="cm">         * @param {String|Object} support rgb or rgba</span>
+<span class="cm">         * @return {Object}</span>
+<span class="cm">         */</span>
+        <span class="nx">rgbToHsba</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rgba</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">rgba</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">rgba</span> <span class="o">=</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/rgba{0,1}\(|\)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span>
+                <span class="nx">rgba</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">r</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="nx">g</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="nx">b</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="nx">a</span><span class="o">:</span> <span class="k">typeof</span> <span class="nx">rgba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">rgba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="kd">var</span> <span class="nx">nH</span><span class="p">,</span>
+                <span class="nx">nS</span><span class="p">,</span>
+                <span class="nx">nV</span><span class="p">,</span>
+                <span class="nx">nR</span> <span class="o">=</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span>
+                <span class="nx">nG</span> <span class="o">=</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span>
+                <span class="nx">nB</span> <span class="o">=</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span>
+                <span class="nx">nmax</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">nR</span><span class="p">,</span> <span class="nx">nG</span><span class="p">,</span> <span class="nx">nB</span><span class="p">),</span>
+                <span class="nx">nmin</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">nR</span><span class="p">,</span> <span class="nx">nG</span><span class="p">,</span> <span class="nx">nB</span><span class="p">),</span>
+                <span class="nx">ndelMax</span> <span class="o">=</span> <span class="nx">nmax</span> <span class="o">-</span> <span class="nx">nmin</span><span class="p">,</span>
+                <span class="nx">ndelR</span><span class="p">,</span>
+                <span class="nx">ndelG</span><span class="p">,</span>
+                <span class="nx">ndelB</span><span class="p">;</span>
+
+            <span class="nx">nV</span> <span class="o">=</span> <span class="nx">nmax</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">ndelMax</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">nH</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="nx">nS</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">nS</span> <span class="o">=</span> <span class="nx">ndelMax</span> <span class="o">/</span> <span class="nx">nmax</span>
+                <span class="nx">ndelR</span> <span class="o">=</span> <span class="p">(((</span><span class="nx">nmax</span> <span class="o">-</span> <span class="nx">nR</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">ndelMax</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nx">ndelMax</span><span class="p">;</span>
+                <span class="nx">ndelG</span> <span class="o">=</span> <span class="p">(((</span><span class="nx">nmax</span> <span class="o">-</span> <span class="nx">nG</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">ndelMax</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nx">ndelMax</span><span class="p">;</span>
+                <span class="nx">ndelB</span> <span class="o">=</span> <span class="p">(((</span><span class="nx">nmax</span> <span class="o">-</span> <span class="nx">nB</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">ndelMax</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nx">ndelMax</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">nR</span> <span class="o">===</span> <span class="nx">nmax</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nH</span> <span class="o">=</span> <span class="nx">ndelB</span> <span class="o">-</span> <span class="nx">ndelG</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nG</span> <span class="o">===</span> <span class="nx">nmax</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nH</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="nx">ndelR</span> <span class="o">-</span> <span class="nx">ndelB</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nB</span> <span class="o">===</span> <span class="nx">nmax</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nH</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="nx">ndelG</span> <span class="o">-</span> <span class="nx">ndelR</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">nH</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nH</span> <span class="o">=</span> <span class="nx">nH</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">nH</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nH</span> <span class="o">=</span> <span class="nx">nH</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">h</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nH</span> <span class="o">*</span> <span class="mi">360</span><span class="p">),</span>
+                <span class="nx">s</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nS</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+                <span class="nx">b</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nV</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+                <span class="nx">a</span><span class="o">:</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">a</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">rgba</span><span class="p">.</span><span class="nx">a</span> <span class="o">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * transform hsb or hsba to rgba</span>
+<span class="cm">         * @method hsbToRgba</span>
+<span class="cm">         * @param {String|Object} support hsb and hsba color</span>
+<span class="cm">         * @return {Object}</span>
+<span class="cm">         */</span>
+        <span class="nx">hsbToRgba</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hsba</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hsba</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">hsba</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/hsba{0,1}\(|\)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span>
+                <span class="nx">hsba</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nx">h</span><span class="o">:</span> <span class="nx">hsba</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="nx">s</span><span class="o">:</span> <span class="nx">hsba</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="nx">b</span><span class="o">:</span> <span class="nx">hsba</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="nx">a</span><span class="o">:</span> <span class="k">typeof</span> <span class="nx">hsba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">hsba</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="kd">var</span> <span class="nx">nH</span><span class="p">,</span><span class="nx">nS</span><span class="p">,</span><span class="nx">nV</span><span class="p">,</span>
+                <span class="nx">nR</span><span class="p">,</span><span class="nx">nG</span><span class="p">,</span><span class="nx">nB</span><span class="p">,</span>
+                <span class="nx">hi</span><span class="p">,</span><span class="nx">f</span><span class="p">,</span><span class="nx">p</span><span class="p">,</span><span class="nx">q</span><span class="p">,</span><span class="nx">t</span><span class="p">;</span>
+
+            <span class="nx">nH</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">.</span><span class="nx">h</span> <span class="o">/</span> <span class="mi">360</span><span class="p">;</span>
+            <span class="nx">nS</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">.</span><span class="nx">s</span> <span class="o">/</span> <span class="mi">100</span><span class="p">;</span>
+            <span class="nx">nV</span> <span class="o">=</span> <span class="nx">hsba</span><span class="p">.</span><span class="nx">b</span> <span class="o">/</span> <span class="mi">100</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">hsba</span><span class="p">.</span><span class="nx">s</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">nR</span> <span class="o">=</span> <span class="nx">nG</span> <span class="o">=</span> <span class="nx">nB</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">hi</span> <span class="o">=</span> <span class="nx">nH</span> <span class="o">*</span> <span class="mi">6</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">hi</span> <span class="o">===</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nx">f</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">hi</span><span class="p">);</span>
+                <span class="nx">p</span> <span class="o">=</span> <span class="nx">nV</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">nS</span><span class="p">);</span>
+                <span class="nx">q</span> <span class="o">=</span> <span class="nx">nV</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">nS</span> <span class="o">*</span> <span class="p">(</span><span class="nx">hi</span> <span class="o">-</span> <span class="nx">f</span><span class="p">));</span>
+                <span class="nx">t</span> <span class="o">=</span> <span class="nx">nV</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">nS</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="nx">hi</span> <span class="o">-</span> <span class="nx">f</span><span class="p">)));</span>
+                <span class="k">switch</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">t</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">q</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">t</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="k">case</span> <span class="mi">3</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">q</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="k">case</span> <span class="mi">4</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">t</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="k">default</span><span class="o">:</span>
+                        <span class="nx">nR</span> <span class="o">=</span> <span class="nx">nV</span><span class="p">;</span>
+                        <span class="nx">nG</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        <span class="nx">nB</span> <span class="o">=</span> <span class="nx">q</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">r</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nR</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
+                <span class="nx">g</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nG</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
+                <span class="nx">b</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">nB</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
+                <span class="nx">a</span><span class="o">:</span> <span class="nx">hsba</span><span class="p">.</span><span class="nx">a</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * transform hex color &lt;code&gt;#fff&lt;/code&gt; to &lt;code&gt;#ffffff&lt;/code&gt;</span>
+<span class="cm">         * @method hexToComplate</span>
+<span class="cm">         * @param {String}</span>
+<span class="cm">         * @return {String}</span>
+<span class="cm">         */</span>
+        <span class="nx">hexToComplate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">hex</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">hex</span> <span class="o">=</span> <span class="nx">hex</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">(),</span>
+                    <span class="nx">newHex</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+                <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">hex</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+                    <span class="nx">newHex</span> <span class="o">+=</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">a</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">newHex</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">hex</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * hide color picker, disable text input</span>
+<span class="cm">         * @method disable</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">disable</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">controls</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">;</span>
+            <span class="nx">controls</span><span class="p">.</span><span class="nx">hsbInput</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="nx">controls</span><span class="p">.</span><span class="nx">picker</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * show color picker, able text input</span>
+<span class="cm">         * @method able</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">able</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">controls</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">;</span>
+            <span class="nx">controls</span><span class="p">.</span><span class="nx">hsbInput</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+            <span class="nx">controls</span><span class="p">.</span><span class="nx">picker</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * fire the onChange event</span>
+<span class="cm">         * @method _fireCallback</span>
+<span class="cm">         * @private</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">_fireCallback</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;onChange&#39;</span><span class="p">)(</span><span class="k">this</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;isAll&#39;</span><span class="p">)));</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">},{</span>
+        <span class="cm">/**</span>
+<span class="cm">         * @attribute isSupportRGBA</span>
+<span class="cm">         * @type Boolean</span>
+<span class="cm">         * @description if the current broswer is support rgba</span>
+<span class="cm">         */</span>
+        <span class="nx">isSupportRGBA</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">);</span>
+            <span class="nx">i</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;rgba(0,0,0,0.1)&#39;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="sr">/^rgba/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
+        <span class="p">})(),</span>
+        <span class="cm">/**</span>
+<span class="cm">         * @attribute keywords</span>
+<span class="cm">         * @type Object</span>
+<span class="cm">         * @description color &lt;a href=&quot;http://www.w3.org/TR/css3-color/#svg-color&quot;&gt;keywords&lt;/a&gt; from &lt;a href=&quot;http://www.w3.org/TR/SVG/types.html#ColorKeywords&quot;&gt;SVG 1.0 color keyword names&lt;/a&gt;</span>
+<span class="cm">         */</span>
+        <span class="nx">keywords</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;aliceblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;antiquewhite&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">235</span><span class="p">,</span> <span class="mi">215</span><span class="p">],</span>
+            <span class="s1">&#39;aqua&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;aquamarine&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">127</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">212</span><span class="p">],</span>
+            <span class="s1">&#39;azure&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;beige&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">245</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
+            <span class="s1">&#39;bisque&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">228</span><span class="p">,</span> <span class="mi">196</span><span class="p">],</span>
+            <span class="s1">&#39;black&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;blanchedalmond&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">235</span><span class="p">,</span> <span class="mi">205</span><span class="p">],</span>
+            <span class="s1">&#39;blue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;blueviolet&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">138</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">226</span><span class="p">],</span>
+            <span class="s1">&#39;brown&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">165</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">],</span>
+            <span class="s1">&#39;burlywood&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">222</span><span class="p">,</span> <span class="mi">184</span><span class="p">,</span> <span class="mi">135</span><span class="p">],</span>
+            <span class="s1">&#39;cadetblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">158</span><span class="p">,</span> <span class="mi">160</span><span class="p">],</span>
+            <span class="s1">&#39;chartreuse&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">127</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;chocolate&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">210</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+            <span class="s1">&#39;coral&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">80</span><span class="p">],</span>
+            <span class="s1">&#39;cornflowerblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">237</span><span class="p">],</span>
+            <span class="s1">&#39;cornsilk&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
+            <span class="s1">&#39;crimson&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">220</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+            <span class="s1">&#39;cyan&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;darkblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">139</span><span class="p">],</span>
+            <span class="s1">&#39;darkcyan&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">139</span><span class="p">],</span>
+            <span class="s1">&#39;darkgoldenrod&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">184</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+            <span class="s1">&#39;darkgray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">],</span>
+            <span class="s1">&#39;darkgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;darkgrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">,</span> <span class="mi">169</span><span class="p">],</span>
+            <span class="s1">&#39;darkkhaki&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">189</span><span class="p">,</span> <span class="mi">183</span><span class="p">,</span> <span class="mi">107</span><span class="p">],</span>
+            <span class="s1">&#39;darkmagenta&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">139</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">139</span><span class="p">],</span>
+            <span class="s1">&#39;darkolivegreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">47</span><span class="p">],</span>
+            <span class="s1">&#39;darkorange&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;darkorchid&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">153</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">204</span><span class="p">],</span>
+            <span class="s1">&#39;darkred&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">139</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;darksalmon&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">233</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">122</span><span class="p">],</span>
+            <span class="s1">&#39;darkseagreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">143</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">143</span><span class="p">],</span>
+            <span class="s1">&#39;darkslateblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">72</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">139</span><span class="p">],</span>
+            <span class="s1">&#39;darkslategray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">47</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">79</span><span class="p">],</span>
+            <span class="s1">&#39;darkslategrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">47</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">79</span><span class="p">],</span>
+            <span class="s1">&#39;darkturquoise&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">209</span><span class="p">],</span>
+            <span class="s1">&#39;darkviolet&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">148</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">211</span><span class="p">],</span>
+            <span class="s1">&#39;deeppink&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">147</span><span class="p">],</span>
+            <span class="s1">&#39;deepskyblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;dimgray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">105</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">105</span><span class="p">],</span>
+            <span class="s1">&#39;dimgrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">105</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">105</span><span class="p">],</span>
+            <span class="s1">&#39;dodgerblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;firebrick&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">178</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">],</span>
+            <span class="s1">&#39;floralwhite&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">240</span><span class="p">],</span>
+            <span class="s1">&#39;forestgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">34</span><span class="p">],</span>
+            <span class="s1">&#39;fuchsia&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;gainsboro&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
+            <span class="s1">&#39;ghostwhite&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">248</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;gold&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">215</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;goldenrod&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">218</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+            <span class="s1">&#39;gray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;green&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;greenyellow&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">173</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">47</span><span class="p">],</span>
+            <span class="s1">&#39;grey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;honeydew&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">240</span><span class="p">],</span>
+            <span class="s1">&#39;hotpink&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
+            <span class="s1">&#39;indianred&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">205</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">92</span><span class="p">],</span>
+            <span class="s1">&#39;indigo&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">130</span><span class="p">],</span>
+            <span class="s1">&#39;ivory&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">240</span><span class="p">],</span>
+            <span class="s1">&#39;khaki&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">140</span><span class="p">],</span>
+            <span class="s1">&#39;lavender&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span>
+            <span class="s1">&#39;lavenderblush&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">245</span><span class="p">],</span>
+            <span class="s1">&#39;lawngreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">252</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;lemonchiffon&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">205</span><span class="p">],</span>
+            <span class="s1">&#39;lightblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">173</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+            <span class="s1">&#39;lightcoral&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;lightcyan&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">224</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;lightgoldenrodyellow&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">210</span><span class="p">],</span>
+            <span class="s1">&#39;lightgray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">211</span><span class="p">,</span> <span class="mi">211</span><span class="p">,</span> <span class="mi">211</span><span class="p">],</span>
+            <span class="s1">&#39;lightgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">144</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">144</span><span class="p">],</span>
+            <span class="s1">&#39;lightgrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">211</span><span class="p">,</span> <span class="mi">211</span><span class="p">,</span> <span class="mi">211</span><span class="p">],</span>
+            <span class="s1">&#39;lightpink&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">182</span><span class="p">,</span> <span class="mi">193</span><span class="p">],</span>
+            <span class="s1">&#39;lightsalmon&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">122</span><span class="p">],</span>
+            <span class="s1">&#39;lightseagreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">178</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+            <span class="s1">&#39;lightskyblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">135</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span>
+            <span class="s1">&#39;lightslategray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">119</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">153</span><span class="p">],</span>
+            <span class="s1">&#39;lightslategrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">119</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">153</span><span class="p">],</span>
+            <span class="s1">&#39;lightsteelblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">176</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">222</span><span class="p">],</span>
+            <span class="s1">&#39;lightyellow&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">224</span><span class="p">],</span>
+            <span class="s1">&#39;lime&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;limegreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">205</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+            <span class="s1">&#39;linen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+            <span class="s1">&#39;magenta&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;maroon&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;mediumaquamarine&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">102</span><span class="p">,</span> <span class="mi">205</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+            <span class="s1">&#39;mediumblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">205</span><span class="p">],</span>
+            <span class="s1">&#39;mediumorchid&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">186</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">211</span><span class="p">],</span>
+            <span class="s1">&#39;mediumpurple&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">147</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">219</span><span class="p">],</span>
+            <span class="s1">&#39;mediumseagreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">113</span><span class="p">],</span>
+            <span class="s1">&#39;mediumslateblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">123</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">238</span><span class="p">],</span>
+            <span class="s1">&#39;mediumspringgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">154</span><span class="p">],</span>
+            <span class="s1">&#39;mediumturquoise&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">72</span><span class="p">,</span> <span class="mi">209</span><span class="p">,</span> <span class="mi">204</span><span class="p">],</span>
+            <span class="s1">&#39;mediumvioletred&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">199</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">133</span><span class="p">],</span>
+            <span class="s1">&#39;midnightblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">112</span><span class="p">],</span>
+            <span class="s1">&#39;mintcream&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">245</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span>
+            <span class="s1">&#39;mistyrose&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">228</span><span class="p">,</span> <span class="mi">225</span><span class="p">],</span>
+            <span class="s1">&#39;moccasin&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">228</span><span class="p">,</span> <span class="mi">181</span><span class="p">],</span>
+            <span class="s1">&#39;navajowhite&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">173</span><span class="p">],</span>
+            <span class="s1">&#39;navy&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;oldlace&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+            <span class="s1">&#39;olive&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;olivedrab&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">107</span><span class="p">,</span> <span class="mi">142</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+            <span class="s1">&#39;orange&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;orangered&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;orchid&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">218</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">214</span><span class="p">],</span>
+            <span class="s1">&#39;palegoldenrod&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">238</span><span class="p">,</span> <span class="mi">232</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+            <span class="s1">&#39;palegreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">152</span><span class="p">,</span> <span class="mi">251</span><span class="p">,</span> <span class="mi">152</span><span class="p">],</span>
+            <span class="s1">&#39;paleturquoise&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">175</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">],</span>
+            <span class="s1">&#39;palevioletred&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">219</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">147</span><span class="p">],</span>
+            <span class="s1">&#39;papayawhip&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">213</span><span class="p">],</span>
+            <span class="s1">&#39;peachpuff&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">218</span><span class="p">,</span> <span class="mi">185</span><span class="p">],</span>
+            <span class="s1">&#39;peru&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">205</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">63</span><span class="p">],</span>
+            <span class="s1">&#39;pink&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">203</span><span class="p">],</span>
+            <span class="s1">&#39;plum&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">221</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">221</span><span class="p">],</span>
+            <span class="s1">&#39;powderblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">176</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+            <span class="s1">&#39;purple&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;red&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;rosybrown&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">188</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">143</span><span class="p">],</span>
+            <span class="s1">&#39;royalblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">225</span><span class="p">],</span>
+            <span class="s1">&#39;saddlebrown&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">139</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+            <span class="s1">&#39;salmon&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">114</span><span class="p">],</span>
+            <span class="s1">&#39;sandybrown&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">244</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">96</span><span class="p">],</span>
+            <span class="s1">&#39;seagreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">87</span><span class="p">],</span>
+            <span class="s1">&#39;seashell&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="mi">238</span><span class="p">],</span>
+            <span class="s1">&#39;sienna&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">160</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">45</span><span class="p">],</span>
+            <span class="s1">&#39;silver&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">192</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">192</span><span class="p">],</span>
+            <span class="s1">&#39;skyblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">135</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">235</span><span class="p">],</span>
+            <span class="s1">&#39;slateblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">106</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">205</span><span class="p">],</span>
+            <span class="s1">&#39;slategray&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">112</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">144</span><span class="p">],</span>
+            <span class="s1">&#39;slategrey&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">112</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">144</span><span class="p">],</span>
+            <span class="s1">&#39;snow&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span>
+            <span class="s1">&#39;springgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">127</span><span class="p">],</span>
+            <span class="s1">&#39;steelblue&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
+            <span class="s1">&#39;tan&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">210</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">140</span><span class="p">],</span>
+            <span class="s1">&#39;teal&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+            <span class="s1">&#39;thistle&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">216</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">216</span><span class="p">],</span>
+            <span class="s1">&#39;tomato&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">71</span><span class="p">],</span>
+            <span class="s1">&#39;turquoise&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">208</span><span class="p">],</span>
+            <span class="s1">&#39;violet&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">238</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">238</span><span class="p">],</span>
+            <span class="s1">&#39;wheat&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">245</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">179</span><span class="p">],</span>
+            <span class="s1">&#39;white&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;whitesmoke&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">245</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="mi">245</span><span class="p">],</span>
+            <span class="s1">&#39;yellow&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;yellowgreen&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">154</span><span class="p">,</span> <span class="mi">205</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="nx">ATTRS</span><span class="o">:</span><span class="p">{</span>
+            <span class="cm">/**</span>
+<span class="cm">             * @attribute wrap</span>
+<span class="cm">             * @type String</span>
+<span class="cm">             * @default &#39;body&#39;</span>
+<span class="cm">             * @description a css selector for &lt;code&gt;Y.one()&lt;/code&gt;,controls will insert into the wrap</span>
+<span class="cm">             */</span>
+            <span class="nx">wrap</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+            <span class="p">},</span>
+            <span class="cm">/**</span>
+<span class="cm">             * @attribute color</span>
+<span class="cm">             * @type String</span>
+<span class="cm">             * @default &#39;transparent&#39;</span>
+<span class="cm">             * @description color for init, support rgba|rgb|hsb|hsba|hex|&lt;a href=&quot;http://www.w3.org/TR/css3-color/#svg-color&quot;&gt;keywords&lt;/a&gt;|&quot;transparent&quot;</span>
+<span class="cm">             */</span>
+            <span class="nx">color</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="s1">&#39;transparent&#39;</span><span class="p">,</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+            <span class="p">},</span>
+            <span class="cm">/**</span>
+<span class="cm">             * @attribute isAll</span>
+<span class="cm">             * @type Boolean</span>
+<span class="cm">             * @default false</span>
+<span class="cm">             * @description if the param include rgba and rgb when run the callback &lt;code&gt;function({rgba:xxx,rgb:xxx}){}&lt;/code&gt; or &lt;code&gt;function(rgba|rgb){}&lt;/code&gt;</span>
+<span class="cm">             */</span>
+            <span class="nx">isAll</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
+            <span class="p">},</span>
+            <span class="cm">/**</span>
+<span class="cm">             * @attribute onInit</span>
+<span class="cm">             * @type Function</span>
+<span class="cm">             * @default function(){}</span>
+<span class="cm">             * @description callback when widget init</span>
+<span class="cm">             */</span>
+            <span class="nx">onInit</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="p">},</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span>
+            <span class="p">},</span>
+            <span class="cm">/**</span>
+<span class="cm">             * @attribute onChange</span>
+<span class="cm">             * @type Function</span>
+<span class="cm">             * @default function(){}</span>
+<span class="cm">             * @description callback when color change</span>
+<span class="cm">             */</span>
+            <span class="nx">onChange</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="p">},</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">},</span><span class="s1">&#39;1.0.0&#39;</span><span class="p">,{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">,</span><span class="s1">&#39;codecola-color-css&#39;</span><span class="p">]});</span>
+</pre></div>

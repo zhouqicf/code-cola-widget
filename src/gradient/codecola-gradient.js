@@ -1,12 +1,22 @@
+/*
+Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
+Code licensed under the MIT License:
+version: 1.0.0
+*/
 /**
  * a gradient control for css3 property
- * @class codecola-gradient
- * @constructor
- * @namespace Y.codecolaGradient
- * @extends Widget
- * @requires codecola-color node widget ua codecola-gradient-css
+ * @module codecola-gradient
  */
 YUI().add('codecola-gradient', function(Y) {
+    /**
+     * a gradient control for css3 property
+     * @param config {Object} Object literal specifying codecolaGradient configuration properties.
+     * @class codecolaGradient
+     * @constructor
+     * @namespace Y
+     * @extends Widget
+     * @requires codecola-color node widget ua codecola-gradient-css
+     */
     Y.codecolaGradient = Y.Base.create('codecola-gradient', Y.Widget, [], {
         initializer: function() {
         },
@@ -151,6 +161,7 @@ YUI().add('codecola-gradient', function(Y) {
         },
 
         /**
+         * update the this.vars.rule object
          * @method _initRule
          * @private
          * @chainable
@@ -228,7 +239,9 @@ YUI().add('codecola-gradient', function(Y) {
             this._addStops(this.vars.rule.stops);
             return this;
         },
+
         /**
+         * init all controls
          * @method _initControls
          * @private
          * @chainable
@@ -237,28 +250,23 @@ YUI().add('codecola-gradient', function(Y) {
             this._initStops()._initOrientation()._initPanel();
             return this;
         },
+
         /**
-         * @method _fireCallback
-         * @private
-         * @chainable
-         */
-        _fireCallback: function(){
-            this.get('onChange')(this.getGradient(this.get('isAll')));
-            return this;
-        },
-        /**
+         * update the attribute 'gradient', init all the controls, fire the onChange event
          * @method setGradient
-         * @param {Object} param
+         * @param {Object} param.gradient for update the attribute 'gradient'
          * @chainable
          */
         setGradient: function(param) {
-            this.set('gradient', param.value);
+            this.set('gradient', param.gradient);
             this.syncUI()._fireCallback();
             return this;
         },
+
         /**
+         * add stops
          * @method _addStops
-         * @param {Array} stops
+         * @param {Array}
          * @private
          * @chainable
          */
@@ -282,24 +290,26 @@ YUI().add('codecola-gradient', function(Y) {
             that._changeCurrentStop(i);
             return that;
         },
+
         /**
+         * bind event to the stop
          * @method _initStopEvent
-         * @param {Node} node
+         * @param {Node} stop
          * @param {Number} id
          * @private
          * @chainable
          */
-        _initStopEvent: function(node, id) {
+        _initStopEvent: function(stop, id) {
             var preX, preEventX, drag = false,
                 that = this,
                 doc = Y.one('html'),
                 panelWidth = that.get('panelWidth');
-            node.on("mousedown", function(e) {
+            stop.on("mousedown", function(e) {
                 if (that.vars.disable) {
                     return;
                 }
                 doc.setStyle("webkitUserSelect", "none");
-                that._changeCurrentStop(node);
+                that._changeCurrentStop(stop);
                 drag = true;
                 preX = that._getPixLeft(that.vars.rule.stops[id].position, true);
                 preEventX = e.pageX;
@@ -318,7 +328,7 @@ YUI().add('codecola-gradient', function(Y) {
                 if (left < -5 || left > panelWidth - 5) {
                     return;
                 }
-                node.setStyle("left", left + "px");
+                stop.setStyle("left", left + "px");
                 var floatLeft = that._getFloatLeft(left);
                 that.vars.rule.stops[id].position = floatLeft;
                 that.vars.location.set('value', that._floatToPercent(floatLeft, true));
@@ -326,9 +336,11 @@ YUI().add('codecola-gradient', function(Y) {
             });
             return that;
         },
+
         /**
+         * activate a stop
          * @method _changeCurrentStop
-         * @param {Node} stop
+         * @param {Node}
          * @private
          * @chainable
          */
@@ -352,11 +364,13 @@ YUI().add('codecola-gradient', function(Y) {
             that.vars.location.set('value', that._floatToPercent(cStop.position, true));
             return that;
         },
+
         /**
+         * get the current gradient
          * @method getGradient
-         * @param {Boolean} isAll if return all of webkit/moz/o/ms gradient
+         * @param {Boolean} isAll if return all of webkit|moz|o|ms gradient <code>{webkit:xxx, moz:xxx, o:xxx, ms:xxx}</code>
          * @param {Boolean} isPanel if for update panel
-         * @return {String}
+         * @return {String|Object}
          */
         getGradient: function(isAll, isPanel) {
             var rule = this.vars.rule,
@@ -403,16 +417,13 @@ YUI().add('codecola-gradient', function(Y) {
             moz = "-moz-linear-gradient(" + orientation.moz + stops.moz + ")";
             o = "-o-linear-gradient(" + orientation.moz + stops.moz + ")";
             ms = "-ms-linear-gradient(" + orientation.moz + stops.moz + ")";
-//            if (isAll) {
-//                return {
-//                    "webkit": webkit,
-//                    "moz": moz,
-//                    "o": o,
-//                    "ms": ms
-//                };
-//            }
             if (isAll){
-                return [webkit,moz,o,ms].join(';');
+                return {
+                    "webkit": webkit,
+                    "moz": moz,
+                    "o": o,
+                    "ms": ms
+                }
             } else if (Y.UA.webkit) {
                 return webkit;
             } else if (Y.UA.gecko) {
@@ -423,9 +434,10 @@ YUI().add('codecola-gradient', function(Y) {
                 return ms;
             }
         },
+
         /**
          * @method _getFloatLeft
-         * @param {Number} leftPix
+         * @param {Number}
          * @private
          * @return {Number}
          */
@@ -439,6 +451,7 @@ YUI().add('codecola-gradient', function(Y) {
             }
             return floatLeft;
         },
+
         /**
          * @method _getPixLeft
          * @param {Number} leftFloat
@@ -462,16 +475,20 @@ YUI().add('codecola-gradient', function(Y) {
                 return pixLeft + "px";
             }
         },
+
         /**
+         * transform percent number to float
          * @method _percentToFloat
-         * @param {String} percent
+         * @param {String}
          * @private
          * @return {Number}
          */
         _percentToFloat: function(percent) {
             return parseInt(percent.replace("%", ""), 10) / 100;
         },
+
         /**
+         * transform float number to percent
          * @method _floatToPercent
          * @param {Number} float
          * @param {Boolean} isNum if return width '%'
@@ -485,7 +502,20 @@ YUI().add('codecola-gradient', function(Y) {
             }
             return percent + "%";
         },
+
         /**
+         * fire the onChange event
+         * @method _fireCallback
+         * @private
+         * @chainable
+         */
+        _fireCallback: function(){
+            this.get('onChange')(this.getGradient(this.get('isAll')));
+            return this;
+        },
+
+        /**
+         * disable all controls
          * @method disable
          * @chainable
          */
@@ -498,7 +528,9 @@ YUI().add('codecola-gradient', function(Y) {
             vars.disable = true;
             return this;
         },
+
         /**
+         * able all controls
          * @method able
          * @chainable
          */
@@ -517,7 +549,7 @@ YUI().add('codecola-gradient', function(Y) {
              * @attribute wrap
              * @type String
              * @default 'body'
-             * @description the wrap for controls to insert
+             * @description a css selector for <code>Y.one()</code>,controls will insert into the wrap
              */
             wrap: {
                 value: 'body',
