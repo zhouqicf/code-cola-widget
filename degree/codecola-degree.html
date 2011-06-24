@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="wrap"></div>
-<img id="test" src="http://farm2.static.flickr.com/1373/5099610992_3b4c528a58.jpg" width="500" style="margin-top:20px;-moz-box-shadow:10px 0 20px #000;-webkit-box-shadow:10px 0 20px #000;box-shadow:10px 0 20px #000;">
+<div id="test" style="margin-top:20px;background-color:#888;width:500px;height:200px;-moz-box-shadow:10px 0 20px #000;-webkit-box-shadow:10px 0 20px #000;box-shadow:10px 0 20px #000;"></div>
 <script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js" charset="utf-8"></script>
 <script>
     YUI({
@@ -25,7 +25,7 @@
         var degree = new Y.codecolaDegree({
             'wrap': '#wrap',
             'degree' : 170,
-            'afterChange' : function(degree) {
+            'onChange' : function(degree) {
                 var x = Math.round(10*Math.cos(-degree*0.017453293)),
                     y = Math.round(10*Math.sin(-degree*0.017453293)),
                     shadow = x + "px " + y + "px 20px #000";
@@ -33,7 +33,7 @@
                 Y.one('#test').setStyles({
                     "MozBoxShadow": shadow,
                     "webkitBoxShadow": shadow,
-                    "boxshadow": shadow,
+                    "boxshadow": shadow
 
                 });
             }

@@ -24,14 +24,15 @@
 }
 .codecola-color-current label{
     float:left;
-    margin-top:8px;
+    position: relative;
+    top: 5px;
 }
 .codecola-color-hsb-range input{
     width:193px;
     margin:0;
 }
 .codecola-color-current input{
-    width:25px;
+    width:42px;
     height:15px;
 }
 .codecola-color-current input{

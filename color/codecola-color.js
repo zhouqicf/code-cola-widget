@@ -1,8 +1,13 @@
 /**
- * @name:codecola color widget
- * @author:zhouqicf@gmail.com
- * @site:www.zhouqicf.com
- * @version:2-0-0
+ * a color control for css3 property
+ * @class codecola-color
+ * @constructor
+ * @namespace Y.codecolaColor
+ * @extends Widget
+ * @requires node widget codecola-color-css
+ * @author zhouqicf@gmail.com
+ * @site www.zhouqicf.com
+ * @version 2-0-0
  */
 YUI().add('codecola-color', function(Y) {
     Y.codecolaColor = Y.Base.create('codecola-color', Y.Widget, [], {
@@ -11,25 +16,25 @@ YUI().add('codecola-color', function(Y) {
 
         renderUI: function(){
             var idRandom = (new Date()).getTime(),
-                html = '<span class="codecola-color-transparent"><input type="text" id="codecola-color-input-' + idRandom + '" class="codecola-color-input" name="' + this.get('name') + '"></span>' +
+                html = '<span class="codecola-color-transparent"><input type="text" id="codecola-color-input-' + idRandom + '" class="codecola-color-input" name="color-picker"></span>' +
                         '<ol class="codecola-color-picker" id="codecola-color-picker-' + idRandom + '">' + '    ' +
                         '<li class="codecola-color-hsb codecola-color-hsbH">' +
-                        '    <div class="codecola-color-current"><label for="codecola-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="text" id="codecola-color-hsbH-current-' + idRandom + '" min="0" max="360"/></div>' +
+                        '    <div class="codecola-color-current"><label for="codecola-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="number" id="codecola-color-hsbH-current-' + idRandom + '" step="1" min="0" max="360"/></div>' +
                         '    <div class="codecola-color-hsb-img"></div>' +
                         '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="360" id="codecola-color-hsbH-' + idRandom + '"/></div>' +
                         '</li>' +
                         '<li class="codecola-color-hsb codecola-color-hsbS">' +
-                        '    <div class="codecola-color-current"><label for="codecola-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="text" id="codecola-color-hsbS-current-' + idRandom + '" min="0" max="100"/></div>' +
+                        '    <div class="codecola-color-current"><label for="codecola-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="number" id="codecola-color-hsbS-current-' + idRandom + '" step="1" min="0" max="100"/></div>' +
                         '    <div class="codecola-color-hsb-img"></div>' +
                         '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="100" id="codecola-color-hsbS-' + idRandom + '"/></div>' +
                         '</li>' +
                         '<li class="codecola-color-hsb codecola-color-hsbB">' +
-                        '    <div class="codecola-color-current"><label for="codecola-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="text" id="codecola-color-hsbB-current-' + idRandom + '" min="0" max="100"/></div>' +
+                        '    <div class="codecola-color-current"><label for="codecola-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="number" id="codecola-color-hsbB-current-' + idRandom + '" step="1" min="0" max="100"/></div>' +
                         '    <div class="codecola-color-hsb-img"></div>' +
                         '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="100" id="codecola-color-hsbB-' + idRandom + '"/></div>' +
                         '</li>' +
                         '<li class="codecola-color-hsb codecola-color-hsbA">' +
-                        '    <div class="codecola-color-current"><label for="codecola-color-hsbA-curren-' + idRandom + '">Aphla:</label><input type="text" id="codecola-color-hsbA-current-' + idRandom + '" min="0" max="1"/></div>' +
+                        '    <div class="codecola-color-current"><label for="codecola-color-hsbA-curren-' + idRandom + '">Aphla:</label><input type="number" id="codecola-color-hsbA-current-' + idRandom + '" step="0.01" min="0" max="1"/></div>' +
                         '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="1" id="codecola-color-hsbA-' + idRandom + '" step="0.01"/></div>' +
                         '</li>' +
                         '</ol>';
@@ -46,8 +51,10 @@ YUI().add('codecola-color', function(Y) {
                 'hRange': Y.one('#codecola-color-hsbH-' + idRandom),
                 'sRange': Y.one('#codecola-color-hsbS-' + idRandom),
                 'bRange': Y.one('#codecola-color-hsbB-' + idRandom),
-                'aRange': Y.one('#codecola-color-hsbA-' + idRandom)
+                'aRange': Y.one('#codecola-color-hsbA-' + idRandom),
+                'rule': {}
             };
+            return this;
         },
 
         bindUI: function(){
@@ -58,28 +65,17 @@ YUI().add('codecola-color', function(Y) {
 
             Y.each(currentRanges,function(node, index){
                 node.on('change',function(e){
-                    var maxNum = parseInt(this.getAttribute('max'), 10),
-                        value = parseInt(this.get('value'), 10);
-
-                    if (value > maxNum) {
-                        this.set('value', maxNum);
-                    } else if (value < 0) {
-                        this.set('value', 0);
-                    }
-
                     var hsba = {
-                        h: currentRanges[0].get('value'),
-                        s: currentRanges[1].get('value'),
-                        b: currentRanges[2].get('value'),
-                        a: currentRanges[3].get('value')
-                    },
-                    initRangeHSB = ['initRangeH', 'initRangeS', 'initRangeB', 'initRangeA'];
+                            h: currentRanges[0].get('value'),
+                            s: currentRanges[1].get('value'),
+                            b: currentRanges[2].get('value'),
+                            a: currentRanges[3].get('value')
+                        },
+                        _initRangeHSB = ['_initRangeH', '_initRangeS', '_initRangeB', '_initRangeA'];
 
-                    that.setColor({
-                        'color': hsba,
-                        'oType': 'hsba',
-                        'initControls': [initRangeHSB[index], 'initInput']
-                    });
+                    vars.rule.hsba = hsba;
+                    vars.rule.rgba = that.changeColor(hsba, 'rgba', 'hsba');
+                    that[_initRangeHSB[index]]()._initInput()._fireCallback();
                 });
             });
 
@@ -91,19 +87,17 @@ YUI().add('codecola-color', function(Y) {
                             b: colorRanges[2].get('value'),
                             a: colorRanges[3].get('value')
                         },
-                        initCurrentHSB = ['initCurrentH', 'initCurrentS', 'initCurrentB', 'initCurrentA'];
+                        _initCurrentHSB = ['_initCurrentH', '_initCurrentS', '_initCurrentB', '_initCurrentA'];
 
-                    that.setColor({
-                        'color': hsba,
-                        'oType': 'hsba',
-                        'initControls': [initCurrentHSB[index], 'initInput']
-                    });
+                    vars.rule.hsba = hsba;
+                    vars.rule.rgba = that.changeColor(hsba, 'rgba', 'hsba');
+                    that[_initCurrentHSB[index]]()._initInput()._fireCallback();
                 });
             });
 
             vars.hsbInput.on('change', function() {
                 that.setColor({
-                    'color': this.get('value')
+                    'value': this.get('value')
                 });
             });
 
@@ -112,141 +106,186 @@ YUI().add('codecola-color', function(Y) {
                 Y.all('.codecola-color-picker').setStyle('display', 'none');
                 vars.picker.setStyle('display', 'block');
             });
-
+            return that;
         },
 
         syncUI: function(){
-            this.setColor({
-                'color': this.get('color')
-            });
+            this._initRule()._initControls();
+            return this;
+        },
+
+        renderer: function() {
+            this.renderUI().bindUI().syncUI().get('onInit')();
+            return this;
         },
 
         /**
-         * @method initInput
-         * @param {Object}
+         * @method _initInput
+         * @private
+         * @chainable
          */
-        initInput: function(color) {
-            var input = this.vars.hsbInput;
+        _initInput: function() {
+            var input = this.vars.hsbInput,
+                color = this.getColor();
             input.set('value', color);
             input.setStyle('backgroundColor', color);
+            return this;
         },
 
         /**
-         * @method initRangeH
-         * @param {Object}
+         * @method _initRangeH
+         * @private
+         * @chainable
          */
-        initRangeH: function(hsba) {
-            this.vars.hRange.set('value', hsba.h);
+        _initRangeH: function() {
+            this.vars.hRange.set('value', this.vars.rule.hsba.h);
+            return this;
         },
 
         /**
-         * @method initRangeS
-         * @param {Object}
+         * @method _initRangeS
+         * @private
+         * @chainable
          */
-        initRangeS: function(hsba) {
-            this.vars.sRange.set('value', hsba.s);
+        _initRangeS: function() {
+            this.vars.sRange.set('value', this.vars.rule.hsba.s);
+            return this;
         },
 
         /**
-         * @method initRangeB
-         * @param {Object}
+         * @method _initRangeB
+         * @private
+         * @chainable
          */
-        initRangeB: function(hsba) {
-            this.vars.bRange.set('value', hsba.b);
+        _initRangeB: function() {
+            this.vars.bRange.set('value', this.vars.rule.hsba.b);
+            return this;
         },
 
         /**
-         * @method initRangeA
-         * @param {Object}
+         * @method _initRangeA
+         * @private
+         * @chainable
          */
-        initRangeA: function(hsba) {
-            this.vars.aRange.set('value', hsba.a);
+        _initRangeA: function() {
+            this.vars.aRange.set('value', this.vars.rule.hsba.a);
+            return this;
         },
 
         /**
-         * @method initCurrentH
-         * @param {Object}
+         * @method _initCurrentH
+         * @private
+         * @chainable
          */
-        initCurrentH: function(hsba) {
-            this.vars.hCurren.set('value', hsba.h);
+        _initCurrentH: function() {
+            this.vars.hCurren.set('value', this.vars.rule.hsba.h);
+            return this;
         },
 
         /**
-         * @method initCurrentS
-         * @param {Object}
+         * @method _initCurrentS
+         * @private
+         * @chainable
          */
-        initCurrentS: function(hsba) {
-            this.vars.sCurren.set('value', hsba.s);
+        _initCurrentS: function() {
+            this.vars.sCurren.set('value', this.vars.rule.hsba.s);
+            return this;
         },
 
         /**
-         * @method initCurrentB
-         * @param {Object}
+         * @method _initCurrentB
+         * @private
+         * @chainable
          */
-        initCurrentB: function(hsba) {
-            this.vars.bCurren.set('value', hsba.b);
+        _initCurrentB: function() {
+            this.vars.bCurren.set('value', this.vars.rule.hsba.b);
+            return this;
         },
 
         /**
-         * @method initCurrentA
-         * @param {Object}
+         * @method _initCurrentA
+         * @private
+         * @chainable
          */
-        initCurrentA: function(hsba) {
-            this.vars.aCurren.set('value', hsba.a);
+        _initCurrentA: function() {
+            this.vars.aCurren.set('value', this.vars.rule.hsba.a);
+            return this;
+        },
+        /**
+         * @method _initControls
+         * @private
+         * @chainable
+         */
+        _initControls: function(){
+            this._initInput()._initRangeH()._initRangeS()._initRangeB()._initRangeA()._initCurrentH()._initCurrentS()._initCurrentB()._initCurrentA();
+            return this;
         },
 
         /**
-         * @method setColor
-         * @param {Object}
+         * @method _initRule
+         * @private
+         * @chainable
          */
-        setColor: function(parms) {
-            var that = this,
-                hsba = typeof parms.color == 'string' ? parms.color.replace(/\s/g, '') : parms.color,
-                oType = parms.oType ? parms.oType : '',
-                initControls = parms.initControls ? parms.initControls : ['initRangeH', 'initRangeS', 'initRangeB', 'initRangeA', 'initCurrentH', 'initCurrentS', 'initCurrentB', 'initCurrentA', 'initInput'];
-            if (oType != 'hsba') {
-                hsba = that.changeColor(hsba, 'hsba');
-            }
-
-            var rgba = that.changeColor(hsba, 'rgba', 'hsba');
+        _initRule: function(){
+            var
+            color = this.get('color'),
+            hsba = this.changeColor(color, 'hsba'),
+            rgba = this.changeColor(hsba, 'rgba', 'hsba');
 
             if (rgba == 'error') {
                 Y.log('error color');
                 return;
             }
 
-            that.set('rgba', rgba);
-            that.set('hsba', hsba);
+            this.vars.rule = {
+                rgba: rgba,
+                hsba: hsba
+            };
 
-            Y.each(initControls, function(cInit){
-                if (cInit == 'initInput') {
-                    that[cInit]('rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + rgba.a + ')');
-                } else {
-                    that[cInit](hsba);
-                }
-            });
-
-            if (parms.callback != false) {
-                that._onAfterChange();
-            }
+            return this;
         },
 
-        _onAfterChange: function() {
-            this.get('afterChange')(this.getColor());
+        /**
+         * @method setColor
+         * @param {Object} param
+         * @chainable
+         */
+        setColor: function(param) {
+            this.set('color', param.value);
+            this.syncUI()._fireCallback();
+            return this;
+        },
+        /**
+         * @method _fireCallback
+         * @private
+         * @chainable
+         */
+        _fireCallback: function() {
+            this.get('onChange')(this.getColor(this.get('isAll')));
+            return this;
         },
 
         /**
          * @method getColor
-         * @return {String}
+         * @param {Boolean} if return rgba and rgb
+         * @return {String|Object}
          */
-        getColor: function() {
-            var rgba = this.get('rgba');
-            if (Y.codecolaColor.isSupportRGBA) {
-                rgba = 'rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + rgba.a + ')';
-            } else {
-                rgba = 'rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')';
+        getColor: function(isAll) {
+            var rgba = this.vars.rule.rgba,rgb;
+            rgba = 'rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + rgba.a + ')';
+            rgb = 'rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')';
+            if(isAll){
+                return {
+                    rgba: rgba,
+                    rgb: rgb
+                }
+            }else{
+                if(Y.codecolaColor.isSupportRGBA){
+                    return rgba;
+                }else{
+                    return rgb;
+                }
             }
-            return rgba;
         },
 
         /**
@@ -406,21 +445,25 @@ YUI().add('codecola-color', function(Y) {
         /**
          * hide color picker, disable text input
          * @method disable
+         * @chainable
          */
         disable: function() {
             var controls = this.vars;
             controls.hsbInput.set('disabled', true);
             controls.picker.setStyle('display', 'none');
+            return this;
         },
 
         /**
          * show color picker, able text input
          * @method able
+         * @chainable
          */
         able: function() {
             var controls = this.vars;
             controls.hsbInput.set('disabled', false);
             controls.picker.setStyle('display', 'block');
+            return this;
         },
 
         /**
@@ -606,11 +649,21 @@ YUI().add('codecola-color', function(Y) {
             }
         }
     },{
+        /**
+         * @attribute isSupportRGBA
+         * @type Boolean
+         * @description if the current broswer is support rgba
+         */
         isSupportRGBA: (function() {
             var i = document.createElement('i');
             i.style.color = 'rgba(0,0,0,0.1)';
             return /^rgba/.test(i.style.color);
         })(),
+        /**
+         * @attribute keywords
+         * @type Object
+         * @description color keywords
+         */
         keywords: {
             'aliceblue': [240, 248, 255],
             'antiquewhite': [250, 235, 215],
@@ -761,20 +814,56 @@ YUI().add('codecola-color', function(Y) {
             'yellowgreen': [154, 205, 50]
         },
         ATTRS:{
+            /**
+             * @attribute wrap
+             * @type String
+             * @default 'body'
+             * @description the wrap for controls to insert
+             */
             wrap: {
                 value: '',
                 validator: Y.Lang.isString
             },
+            /**
+             * @attribute color
+             * @type String
+             * @default 'transparent'
+             * @description color for init
+             */
             color: {
                 value: 'transparent',
                 validator: Y.Lang.isString
             },
-            name: {
-                value: 'color-picker',
-                validator: Y.Lang.isString
+            /**
+             * @attribute isAll
+             * @type Boolean
+             * @default false
+             * @description if the param include rgba and rgb when run the callback <code>function({rgba:xxx,rgb:xxx}){}</code> or <code>function(rgba|rgb){}</code>
+             */
+            isAll: {
+                value: false,
+                validator: Y.Lang.isBoolean
             },
-            afterChange: {
-                value: function(){},
+            /**
+             * @attribute onInit
+             * @type Function
+             * @default function(){}
+             * @description callback when widget init
+             */
+            onInit: {
+                value: function() {
+                },
+                validator: Y.Lang.isFunction
+            },
+            /**
+             * @attribute onChange
+             * @type Function
+             * @default function(){}
+             * @description callback when degree change
+             */
+            onChange: {
+                value: function() {
+                },
                 validator: Y.Lang.isFunction
             }
         }

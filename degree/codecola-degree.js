@@ -1,8 +1,13 @@
 /**
- * @name:codecola degree widget
- * @author:zhouqicf@gmail.com
- * @site:www.zhouqicf.com
- * @version:2-0-0
+ * a degree control for css3 property
+ * @class codecola-degree
+ * @constructor
+ * @namespace Y.codecolaDegree
+ * @extends Widget
+ * @requires node widget codecola-degree-css
+ * @author zhouqicf@gmail.com
+ * @site www.zhouqicf.com
+ * @version 2-0-0
  */
 YUI().add('codecola-degree', function(Y) {
     Y.codecolaDegree = Y.Base.create('codecola-degree', Y.Widget, [], {
@@ -17,23 +22,22 @@ YUI().add('codecola-degree', function(Y) {
                 'line' : Y.Node.create('<i class="codecola-degree-line"></i>'),
                 'dot' : Y.Node.create('<b class="codecola-degree-dot"></b>'),
                 'label' : Y.Node.create('<label class="codecola-degree-label"></label>'),
-                'input' : Y.Node.create('<input type="text" class="codecola-degree-input" max="180" min="-180">')
+                'input' : Y.Node.create('<input type="number" class="codecola-degree-input" step="1" max="180" min="-180">')
             };
-            var _val = that.vars,
-                _degreeWrap = _val.degreeWrap,
-                _degree = _val.degree,
-                _line = _val.line,
-                _dot = _val.dot,
-                _label = _val.label,
-                _input = _val.input;
+            var val = that.vars,
+                degreeWrap = val.degreeWrap,
+                degree = val.degree,
+                line = val.line,
+                dot = val.dot,
+                label = val.label,
+                input = val.input;
 
-            _degree.append(_line);
-            _degree.append(_dot);
-            _label.append(_input);
-            _label.append(Y.Node.create('度'));
-            _degreeWrap.append(_degree);
-            _degreeWrap.append(_label);
-            Y.one(that.get('wrap')).append(_degreeWrap);
+            degree.append(line).append(dot);
+            label.append(input).append(Y.Node.create('度'));
+            degreeWrap.append(degree).append(label);
+            Y.one(that.get('wrap')).append(degreeWrap);
+
+            return that;
         },
 
         bindUI: function() {
@@ -42,12 +46,13 @@ YUI().add('codecola-degree', function(Y) {
                 vars = that.vars,
                 doc = Y.one('html');
             vars.degree.on('click', function(e) {
-                that.setDegree(that._countDegree(e));
+                that.setDegree({
+                    value: that._countDegree(e)
+                });
             });
             vars.degree.on('mousedown', function(e) {
                 drag = true;
                 doc.setStyle('webkitUserSelect', 'none');
-                that._countDegree(e);
             });
             doc.on('mouseup', function() {
                 drag = false;
@@ -57,15 +62,26 @@ YUI().add('codecola-degree', function(Y) {
                 if (!drag) {
                     return;
                 }
-                that.setDegree(that._countDegree(e));
+                that.setDegree({
+                    value: that._countDegree(e)
+                });
             });
             vars.input.on('change', function() {
-                that.setDegree(this.get('value'));
+                that.setDegree({
+                    value: this.get('value')
+                });
             });
+            return that;
         },
 
         syncUI: function() {
-            this.setDegree(this.get('degree'));
+            this._initControls();
+            return this;
+        },
+
+        renderer: function(){
+            this.renderUI().bindUI().syncUI().get('onInit')();
+            return this;
         },
 
         /**
@@ -75,60 +91,70 @@ YUI().add('codecola-degree', function(Y) {
          * @return {Number}
          */
         _countDegree: function(e) {
-            var _dot = this.vars.dot,
-                _degree,
-                _dotXY = _dot.getXY(),
-                _offset = {};
+            var dot = this.vars.dot,
+                dotXY = dot.getXY(),
+                offset = {};
 
-            _offset.x = e.clientX - _dotXY[0];
-            _offset.y = e.clientY - _dotXY[1];
+            offset.x = e.clientX - dotXY[0];
+            offset.y = e.clientY - dotXY[1];
 
-            return - Math.ceil(Math.atan2(_offset.y, _offset.x) * (360 / (2 * Math.PI)));
+            return - Math.ceil(Math.atan2(offset.y, offset.x) * (360 / (2 * Math.PI)));
         },
         /**
-         * @method showDegree
+         * @method _initControls
+         * @chainable
          */
-        showDegree: function() {
+        _initControls: function() {
             var that = this,
-                _degree = that.get('degree'),
-                _value = 'rotate(' + (-_degree) + 'deg)';
+                degree = that.get('degree'),
+                value = 'rotate(' + (-degree) + 'deg)';
 
             that.vars.line.setStyles({
-                'MozTransform': _value,
-                'webkitTransform': _value,
-                'OTransform': _value,
-                'transform': _value
+                'MozTransform': value,
+                'webkitTransform': value,
+                'OTransform': value,
+                'transform': value
             });
 
-            that.vars.input.set('value', _degree);
-
+            that.vars.input.set('value', degree);
             return that;
         },
         /**
          * @method setDegree
-         * @param {Number}
+         * @param {Object}
+         * @chainable
          */
-        setDegree: function(_degree) {
-            var that = this;
-            that.set('degree', _degree).showDegree()._onSetDegree();
-
-            return that;
+        setDegree: function(param) {
+            this.set('degree', param.value)._initControls()._fireCallback();
+            return this;
         },
         /**
-         * @method _onSetDegree
+         * @method _fireCallback
          * @private
+         * @chainable
          */
-        _onSetDegree: function() {
-            this.get('afterChange')(this.get('degree'));
-
+        _fireCallback: function() {
+            this.get('onChange')(this.get('degree'));
             return this;
         }
     }, {
         ATTRS:{
+            /**
+             * @attribute wrap
+             * @type String
+             * @default 'body'
+             * @description the wrap for controls to insert
+             */
             wrap: {
-                value: '',
+                value: 'body',
                 validator: Y.Lang.isString
             },
+            /**
+             * @attribute degree
+             * @type Number
+             * @default 0
+             * @description degree for init
+             */
             degree: {
                 value: 0,
                 validator: function(v){
@@ -140,7 +166,24 @@ YUI().add('codecola-degree', function(Y) {
                     }
                 }
             },
-            afterChange: {
+            /**
+             * @attribute onInit
+             * @type Function
+             * @default function(){}
+             * @description callback when widget init
+             */
+            onInit: {
+                value: function() {
+                },
+                validator: Y.Lang.isFunction
+            },
+            /**
+             * @attribute onChange
+             * @type Function
+             * @default function(){}
+             * @description callback when degree change
+             */
+            onChange: {
                 value: function() {
                 },
                 validator: Y.Lang.isFunction

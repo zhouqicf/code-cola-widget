@@ -32,7 +32,10 @@ YUI({
 }).use('codecola-gradient', function(Y) {
     var gradient = new Y.codecolaGradient({
         wrap: "#wrap",
-        afterChange : function(v){
+        onInit: function(){
+            console.log('init');
+        },
+        onChange : function(v){
             Y.one('#test').setStyle("backgroundImage",v);
         }
     });
