@@ -29,7 +29,8 @@ YUI().add('codecola-degree', function(Y) {
                 line : Y.Node.create('<i class="codecola-degree-line"></i>'),
                 dot : Y.Node.create('<b class="codecola-degree-dot"></b>'),
                 label : Y.Node.create('<label class="codecola-degree-label"></label>'),
-                input : Y.Node.create('<input type="number" class="codecola-degree-input" step="1" max="180" min="-180">')
+                input : Y.Node.create('<input type="number" class="codecola-degree-input" step="1" max="180" min="-180">'),
+                disable: false
             };
             var val = that.vars,
                 degreeWrap = val.degreeWrap,
@@ -53,20 +54,29 @@ YUI().add('codecola-degree', function(Y) {
                 vars = that.vars,
                 doc = Y.one('html');
             vars.degree.on('click', function(e) {
+                if(vars.disable){
+                    return;
+                }
                 that.setDegree({
                     degree: that._calculateDegree(e)
                 });
             });
             vars.degree.on('mousedown', function(e) {
+                if(vars.disable){
+                    return;
+                }
                 drag = true;
                 doc.setStyle('webkitUserSelect', 'none');
             });
             doc.on('mouseup', function() {
+                if(vars.disable){
+                    return;
+                }
                 drag = false;
                 doc.setStyle('webkitUserSelect', '');
             });
             doc.on('mousemove', function(e) {
-                if (!drag) {
+                if (!drag || vars.disable) {
                     return;
                 }
                 that.setDegree({
@@ -103,8 +113,8 @@ YUI().add('codecola-degree', function(Y) {
                 dotXY = dot.getXY(),
                 offset = {};
 
-            offset.x = e.clientX - dotXY[0];
-            offset.y = e.clientY - dotXY[1];
+            offset.x = e.clientX + window.pageXOffset - dotXY[0];
+            offset.y = e.clientY + window.pageYOffset - dotXY[1];
 
             return - Math.ceil(Math.atan2(offset.y, offset.x) * (360 / (2 * Math.PI)));
         },
@@ -142,7 +152,50 @@ YUI().add('codecola-degree', function(Y) {
             return this;
         },
 
+        /**
+         * return the current degree
+         * @method getDegree
+         * @return {Number}
+         */
+        getDegree: function() {
+            return this.get('degree');
+        },
+
+        /**
+         * reset all, degree is 0, will not run onChange
+         * @method reset
+         * @chainable
+         */
+        reset: function(param) {
+            this.set('degree', 0)._initControls();
+            return this;
+        },
+
         //TODO: add able and disable method
+        /**
+         * disable all controls
+         * @method disable
+         * @chainable
+         */
+        disable: function() {
+            var vars = this.vars;
+            vars.input.set('disable', true);
+            vars.disable = true;
+            return this;
+        },
+
+        /**
+         * able all controls
+         * @method able
+         * @chainable
+         */
+        able: function() {
+            var vars = this.vars;
+            vars.input.set('disable', false);
+            vars.disable = false;
+            return this;
+        },
+
 
         /**
          * fire the onChange event
@@ -207,4 +260,4 @@ YUI().add('codecola-degree', function(Y) {
             }
         }
     });
-}, '1.0.0', {requires:['node', 'widget','codecola-degree-css']});
+}, '1.0.0', {requires:['node', 'widget-base','codecola-degree-css']});

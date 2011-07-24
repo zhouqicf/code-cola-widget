@@ -562,17 +562,12 @@
 <span class="cm">             * @description gradient for init</span>
 <span class="cm">             */</span>
             <span class="nx">gradient</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">value</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">webkit</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">gecko</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-moz-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">opera</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-ms-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">,</span>
+                <span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">v</span><span class="p">){</span>
+                        <span class="k">return</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span>
                     <span class="p">}</span>
-                <span class="p">})()</span>
+                <span class="p">}</span>
             <span class="p">},</span>
             <span class="cm">/**</span>
 <span class="cm">             * @attribute panelWidth</span>
@@ -618,5 +613,5 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">});</span>
-<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">,</span> <span class="s1">&#39;ua&#39;</span><span class="p">,</span> <span class="s1">&#39;codecola-gradient-css&#39;</span><span class="p">]});</span>
+<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget-base&#39;</span><span class="p">,</span> <span class="s1">&#39;ua&#39;</span><span class="p">,</span> <span class="s1">&#39;codecola-gradient-css&#39;</span><span class="p">]});</span>
 </pre></div>

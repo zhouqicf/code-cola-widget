@@ -562,17 +562,12 @@ YUI().add('codecola-gradient', function(Y) {
              * @description gradient for init
              */
             gradient: {
-                value: (function() {
-                    if (Y.UA.webkit) {
-                        return "-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))";
-                    } else if (Y.UA.gecko) {
-                        return "-moz-linear-gradient(left , #000 0%, #fff 100%)";
-                    } else if (Y.UA.opera) {
-                        return "-o-linear-gradient(left , #000 0%, #fff 100%)";
-                    } else if ( Y.UA.ie) {
-                        return "-ms-linear-gradient(left , #000 0%, #fff 100%)";
+                value: "-o-linear-gradient(left , #000 0%, #fff 100%)",
+                setter: function(v){
+                    if(!v){
+                        return "-o-linear-gradient(left , #000 0%, #fff 100%)"
                     }
-                })()
+                }
             },
             /**
              * @attribute panelWidth
@@ -618,4 +613,4 @@ YUI().add('codecola-gradient', function(Y) {
             }
         }
     });
-}, '1.0.0', {requires:['codecola-color', 'node', 'widget', 'ua', 'codecola-gradient-css']});
+}, '1.0.0', {requires:['codecola-color', 'node', 'widget-base', 'ua', 'codecola-gradient-css']});

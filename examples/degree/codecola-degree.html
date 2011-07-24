@@ -26,16 +26,11 @@
             'wrap': '#wrap',
             'degree' : 170,
             'onChange' : function(degree) {
-                var x = Math.round(10*Math.cos(-degree*0.017453293)),
-                    y = Math.round(10*Math.sin(-degree*0.017453293)),
+                var x = 0 - Math.round(20 * Math.cos(degree * 0.017453293)),
+                    y = Math.round(20 * Math.sin(degree * 0.017453293));
                     shadow = x + "px " + y + "px 20px #000";
 
-                Y.one('#test').setStyles({
-                    "MozBoxShadow": shadow,
-                    "webkitBoxShadow": shadow,
-                    "boxshadow": shadow
-
-                });
+                Y.one('#test').setAttribute('style','margin-top:20px;background-color:#888;width:500px;height:200px;-moz-box-shadow:'+shadow+';-webkit-box-shadow:'+shadow+';box-shadow:'+shadow);
             }
         });
         degree.render();

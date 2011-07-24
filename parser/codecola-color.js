@@ -243,7 +243,6 @@ YUI().add('codecola-color', function(Y) {
             rgba = this.changeColor(hsba, 'rgba', 'hsba');
 
             if (rgba == 'error') {
-                Y.log('error color');
                 return;
             }
 
@@ -262,8 +261,17 @@ YUI().add('codecola-color', function(Y) {
          * @chainable
          */
         setColor: function(param) {
-            this.set('color', param.color);
-            this.syncUI()._fireCallback();
+            this.set('color', param.color).syncUI()._fireCallback();
+            return this;
+        },
+
+        /**
+         * reset all, color is 'transparent', will not run onChange
+         * @method reset
+         * @chainable
+         */
+        reset: function() {
+            this.set('color', 'transparent').syncUI();
             return this;
         },
 
@@ -860,7 +868,13 @@ YUI().add('codecola-color', function(Y) {
              */
             color: {
                 value: 'transparent',
-                validator: Y.Lang.isString
+                validator: function(v){
+                    v = v.replace(/\s/g, '');
+                    return this.isHEX(v) || this.isHSB(v) || this.isHSBA(v) || this.isRGB(v) || this.isRGBA(v) || v in Y.codecolaColor.keywords || v == 'transparent';
+                },
+                setter: function(v){
+                    return v.replace(/\s/g, '');
+                }
             },
             /**
              * @attribute isAll
@@ -896,4 +910,4 @@ YUI().add('codecola-color', function(Y) {
             }
         }
     });
-},'1.0.0',{requires:['node', 'widget','codecola-color-css']});
+},'1.0.0',{requires:['node', 'widget-base', 'codecola-color-css']});

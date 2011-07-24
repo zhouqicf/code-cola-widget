@@ -4,11 +4,11 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<title>API: codecola-degree   codecola-gradient.js  (YUI Library)</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1308907475.6" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1308907475.6" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1311488274.18" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1311488274.18" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1308907475.6"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1308907475.6"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1311488274.18"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1311488274.18"></script>
 </head>
 
 <body id="yahoo-com">
@@ -611,17 +611,12 @@
 <span class="cm">             * @description gradient for init</span>
 <span class="cm">             */</span>
             <span class="nx">gradient</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">value</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">webkit</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">gecko</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-moz-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">opera</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
-                    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">return</span> <span class="s2">&quot;-ms-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">;</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span><span class="p">,</span>
+                <span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">v</span><span class="p">){</span>
+                        <span class="k">return</span> <span class="s2">&quot;-o-linear-gradient(left , #000 0%, #fff 100%)&quot;</span>
                     <span class="p">}</span>
-                <span class="p">})()</span>
+                <span class="p">}</span>
             <span class="p">},</span>
             <span class="cm">/**</span>
 <span class="cm">             * @attribute panelWidth</span>
@@ -667,7 +662,7 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">});</span>
-<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">,</span> <span class="s1">&#39;ua&#39;</span><span class="p">,</span> <span class="s1">&#39;codecola-gradient-css&#39;</span><span class="p">]});</span>
+<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;codecola-color&#39;</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget-base&#39;</span><span class="p">,</span> <span class="s1">&#39;ua&#39;</span><span class="p">,</span> <span class="s1">&#39;codecola-gradient-css&#39;</span><span class="p">]});</span>
 </pre></div>
                     </div>
 			</div>
@@ -711,7 +706,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Y.codecolaDegree.html#config_degree", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "degree"}, {"url": "Y.codecolaDegree.html#event_degreeChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "degreeChange"}, {"url": "Y.codecolaDegree.html#config_onChange", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "onChange"}, {"url": "Y.codecolaDegree.html#event_onChangeChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "onChangeChange"}, {"url": "Y.codecolaDegree.html#config_onInit", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "onInit"}, {"url": "Y.codecolaDegree.html#event_onInitChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "onInitChange"}, {"url": "Y.codecolaDegree.html#method_setDegree", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "setDegree"}, {"url": "Y.codecolaDegree.html#config_wrap", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "wrap"}, {"url": "Y.codecolaDegree.html#event_wrapChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "wrapChange"}];
+    ALL_YUI_PROPS = [{"url": "Y.codecolaDegree.html#method_able", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "able"}, {"url": "Y.codecolaDegree.html#config_degree", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "degree"}, {"url": "Y.codecolaDegree.html#event_degreeChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "degreeChange"}, {"url": "Y.codecolaDegree.html#method_disable", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "disable"}, {"url": "Y.codecolaDegree.html#method_getDegree", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "getDegree"}, {"url": "Y.codecolaDegree.html#config_onChange", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "onChange"}, {"url": "Y.codecolaDegree.html#event_onChangeChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "onChangeChange"}, {"url": "Y.codecolaDegree.html#config_onInit", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "onInit"}, {"url": "Y.codecolaDegree.html#event_onInitChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "onInitChange"}, {"url": "Y.codecolaDegree.html#method_reset", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "reset"}, {"url": "Y.codecolaDegree.html#method_setDegree", "access": "", "host": "Y.codecolaDegree", "type": "method", "name": "setDegree"}, {"url": "Y.codecolaDegree.html#config_wrap", "access": "", "host": "Y.codecolaDegree", "type": "config", "name": "wrap"}, {"url": "Y.codecolaDegree.html#event_wrapChange", "access": "", "host": "Y.codecolaDegree", "type": "event", "name": "wrapChange"}];
 </script>
 </body>
 </html>

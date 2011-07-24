@@ -243,7 +243,6 @@
             <span class="nx">rgba</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">changeColor</span><span class="p">(</span><span class="nx">hsba</span><span class="p">,</span> <span class="s1">&#39;rgba&#39;</span><span class="p">,</span> <span class="s1">&#39;hsba&#39;</span><span class="p">);</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">rgba</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;error color&#39;</span><span class="p">);</span>
                 <span class="k">return</span><span class="p">;</span>
             <span class="p">}</span>
 
@@ -262,8 +261,17 @@
 <span class="cm">         * @chainable</span>
 <span class="cm">         */</span>
         <span class="nx">setColor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="nx">param</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">syncUI</span><span class="p">().</span><span class="nx">_fireCallback</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="nx">param</span><span class="p">.</span><span class="nx">color</span><span class="p">).</span><span class="nx">syncUI</span><span class="p">().</span><span class="nx">_fireCallback</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * reset all, color is &#39;transparent&#39;, will not run onChange</span>
+<span class="cm">         * @method reset</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">reset</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;transparent&#39;</span><span class="p">).</span><span class="nx">syncUI</span><span class="p">();</span>
             <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
         <span class="p">},</span>
 
@@ -860,7 +868,13 @@
 <span class="cm">             */</span>
             <span class="nx">color</span><span class="o">:</span> <span class="p">{</span>
                 <span class="nx">value</span><span class="o">:</span> <span class="s1">&#39;transparent&#39;</span><span class="p">,</span>
-                <span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+                <span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+                    <span class="nx">v</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">isHEX</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isHSB</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isHSBA</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isRGB</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isRGBA</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="nx">v</span> <span class="k">in</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">codecolaColor</span><span class="p">.</span><span class="nx">keywords</span> <span class="o">||</span> <span class="nx">v</span> <span class="o">==</span> <span class="s1">&#39;transparent&#39;</span><span class="p">;</span>
+                <span class="p">},</span>
+                <span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+                    <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
             <span class="p">},</span>
             <span class="cm">/**</span>
 <span class="cm">             * @attribute isAll</span>
@@ -896,5 +910,5 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">});</span>
-<span class="p">},</span><span class="s1">&#39;1.0.0&#39;</span><span class="p">,{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">,</span><span class="s1">&#39;codecola-color-css&#39;</span><span class="p">]});</span>
+<span class="p">},</span><span class="s1">&#39;1.0.0&#39;</span><span class="p">,{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget-base&#39;</span><span class="p">,</span> <span class="s1">&#39;codecola-color-css&#39;</span><span class="p">]});</span>
 </pre></div>

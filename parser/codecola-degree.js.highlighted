@@ -29,7 +29,8 @@
                 <span class="nx">line</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;i class=&quot;codecola-degree-line&quot;&gt;&lt;/i&gt;&#39;</span><span class="p">),</span>
                 <span class="nx">dot</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;b class=&quot;codecola-degree-dot&quot;&gt;&lt;/b&gt;&#39;</span><span class="p">),</span>
                 <span class="nx">label</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;label class=&quot;codecola-degree-label&quot;&gt;&lt;/label&gt;&#39;</span><span class="p">),</span>
-                <span class="nx">input</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&quot;number&quot; class=&quot;codecola-degree-input&quot; step=&quot;1&quot; max=&quot;180&quot; min=&quot;-180&quot;&gt;&#39;</span><span class="p">)</span>
+                <span class="nx">input</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&quot;number&quot; class=&quot;codecola-degree-input&quot; step=&quot;1&quot; max=&quot;180&quot; min=&quot;-180&quot;&gt;&#39;</span><span class="p">),</span>
+                <span class="nx">disable</span><span class="o">:</span> <span class="kc">false</span>
             <span class="p">};</span>
             <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">vars</span><span class="p">,</span>
                 <span class="nx">degreeWrap</span> <span class="o">=</span> <span class="nx">val</span><span class="p">.</span><span class="nx">degreeWrap</span><span class="p">,</span>
@@ -53,20 +54,29 @@
                 <span class="nx">vars</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">vars</span><span class="p">,</span>
                 <span class="nx">doc</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">);</span>
             <span class="nx">vars</span><span class="p">.</span><span class="nx">degree</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span><span class="p">){</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
                 <span class="nx">that</span><span class="p">.</span><span class="nx">setDegree</span><span class="p">({</span>
                     <span class="nx">degree</span><span class="o">:</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_calculateDegree</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
                 <span class="p">});</span>
             <span class="p">});</span>
             <span class="nx">vars</span><span class="p">.</span><span class="nx">degree</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span><span class="p">){</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
                 <span class="nx">drag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
                 <span class="nx">doc</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;webkitUserSelect&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
             <span class="p">});</span>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span><span class="p">){</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
                 <span class="nx">drag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
                 <span class="nx">doc</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;webkitUserSelect&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
             <span class="p">});</span>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">drag</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">drag</span> <span class="o">||</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">return</span><span class="p">;</span>
                 <span class="p">}</span>
                 <span class="nx">that</span><span class="p">.</span><span class="nx">setDegree</span><span class="p">({</span>
@@ -103,8 +113,8 @@
                 <span class="nx">dotXY</span> <span class="o">=</span> <span class="nx">dot</span><span class="p">.</span><span class="nx">getXY</span><span class="p">(),</span>
                 <span class="nx">offset</span> <span class="o">=</span> <span class="p">{};</span>
 
-            <span class="nx">offset</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">-</span> <span class="nx">dotXY</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-            <span class="nx">offset</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">-</span> <span class="nx">dotXY</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="nx">offset</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">pageXOffset</span> <span class="o">-</span> <span class="nx">dotXY</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="nx">offset</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">pageYOffset</span> <span class="o">-</span> <span class="nx">dotXY</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
             <span class="k">return</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">ceil</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="nx">offset</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">offset</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">360</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)));</span>
         <span class="p">},</span>
@@ -142,7 +152,50 @@
             <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
         <span class="p">},</span>
 
+        <span class="cm">/**</span>
+<span class="cm">         * return the current degree</span>
+<span class="cm">         * @method getDegree</span>
+<span class="cm">         * @return {Number}</span>
+<span class="cm">         */</span>
+        <span class="nx">getDegree</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">);</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * reset all, degree is 0, will not run onChange</span>
+<span class="cm">         * @method reset</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">reset</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">).</span><span class="nx">_initControls</span><span class="p">();</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
         <span class="c1">//TODO: add able and disable method</span>
+        <span class="cm">/**</span>
+<span class="cm">         * disable all controls</span>
+<span class="cm">         * @method disable</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">disable</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">vars</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">;</span>
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * able all controls</span>
+<span class="cm">         * @method able</span>
+<span class="cm">         * @chainable</span>
+<span class="cm">         */</span>
+        <span class="nx">able</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">vars</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vars</span><span class="p">;</span>
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+            <span class="nx">vars</span><span class="p">.</span><span class="nx">disable</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">},</span>
+
 
         <span class="cm">/**</span>
 <span class="cm">         * fire the onChange event</span>
@@ -207,5 +260,5 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">});</span>
-<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">,</span><span class="s1">&#39;codecola-degree-css&#39;</span><span class="p">]});</span>
+<span class="p">},</span> <span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="s1">&#39;widget-base&#39;</span><span class="p">,</span><span class="s1">&#39;codecola-degree-css&#39;</span><span class="p">]});</span>
 </pre></div>
