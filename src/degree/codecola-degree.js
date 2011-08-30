@@ -171,7 +171,6 @@ YUI().add('codecola-degree', function(Y) {
             return this;
         },
 
-        //TODO: add able and disable method
         /**
          * disable all controls
          * @method disable
