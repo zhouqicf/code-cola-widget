@@ -556,14 +556,14 @@ YUI().add('codecola-gradient', function(Y) {
             /**
              * @attribute gradient
              * @type String
-             * @default "-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))" or "-moz-linear-gradient(left , #000 0%, #fff 100%)" or "-o-linear-gradient(left , #000 0%, #fff 100%)" or "-ms-linear-gradient(left , #000 0%, #fff 100%)"
+             * @default "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#fff))" or "-moz-linear-gradient(top , #000 0%, #fff 100%)" or "-o-linear-gradient(top , #000 0%, #fff 100%)" or "-ms-linear-gradient(top , #000 0%, #fff 100%)"
              * @description gradient for init
              */
             gradient: {
-                value: "-webkit-linear-gradient(left , #000 0%, #fff 100%)",
+                value: "-webkit-linear-gradient(top , #000 0%, #fff 100%)",
                 setter: function(v){
                     if(!v){
-                        return "-webkit-linear-gradient(left , #000 0%, #fff 100%)"
+                        return "-webkit-linear-gradient(top , #000 0%, #fff 100%)"
                     }
                 }
             },
