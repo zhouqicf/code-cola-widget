@@ -115,7 +115,6 @@ YUI().add('codecola-degree', function(Y) {
 
             offset.x = e.clientX + window.pageXOffset - dotXY[0];
             offset.y = e.clientY + window.pageYOffset - dotXY[1];
-
             return - Math.ceil(Math.atan2(offset.y, offset.x) * (360 / (2 * Math.PI)));
         },
 

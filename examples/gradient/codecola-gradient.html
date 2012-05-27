@@ -20,13 +20,21 @@ YUI({
             fullpath: '/code-cola-widget/src/color/codecola-color.js',
             requires: ['node', 'widget', 'widget-stack', 'codecola-color-css']
         },
+        'codecola-degree-css': {
+            fullpath: '/code-cola-widget/src/degree/codecola-degree.css',
+            type: 'css'
+        },
+        'codecola-degree': {
+            fullpath: '/code-cola-widget/src/degree/codecola-degree.js',
+            requires: ['node', 'widget', 'widget-stack', 'codecola-degree-css']
+        },
         'codecola-gradient-css': {
             fullpath: '/code-cola-widget/src/gradient/codecola-gradient.css',
             type: 'css'
         },
         'codecola-gradient': {
             fullpath: '/code-cola-widget/src/gradient/codecola-gradient.js',
-            requires: ['codecola-color', 'node', 'widget', 'ua', 'codecola-gradient-css']
+            requires: ['codecola-color', 'codecola-degree', 'node', 'widget', 'ua', 'codecola-gradient-css']
         }
     }
 }).use('codecola-gradient', function(Y) {
